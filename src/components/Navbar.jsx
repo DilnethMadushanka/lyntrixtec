@@ -52,13 +52,9 @@ export default function Navbar({
   const initial = currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : 'U';
 
   return (
-    <header
-      className={`fixed top-0 inset-x-0 z-50 transition-[background-color,border-color] duration-300 border-b ${
-        scrolled || open ? 'bg-[#06080d]/90 backdrop-blur-xl border-white/[0.08]' : 'bg-transparent border-transparent'
-      }`}
-    >
+    <header className="fixed top-0 inset-x-0 z-50">
       {maintenanceConfig?.enabled && (
-        <div className="bg-amber-500/10 border-b border-amber-500/30 px-4 py-2 text-amber-200 text-xs flex items-center justify-center gap-2">
+        <div className="bg-amber-500/10 backdrop-blur-xl border-b border-amber-500/25 px-4 py-2 text-amber-200 text-xs flex items-center justify-center gap-2">
           <AlertTriangle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
           <span className="font-semibold text-amber-300 shrink-0">Maintenance</span>
           <span className="truncate min-w-0 text-amber-100/90">{maintenanceConfig.message}</span>
@@ -70,96 +66,110 @@ export default function Navbar({
         </div>
       )}
 
-      <div className="container-x h-16 flex items-center justify-between gap-4">
-        {/* Brand */}
-        <a href="#" className="flex items-center gap-2.5 shrink-0" aria-label="Lyntrix home">
-          <span className="w-9 h-9 rounded-[10px] bg-[var(--surface-2)] border border-white/10 p-1.5 grid place-items-center">
-            <img src="/logo-icon.svg" alt="" className="w-full h-full object-contain" />
-          </span>
-          <span className="font-['Outfit'] font-semibold text-[1.15rem] tracking-[0.08em] text-white leading-none">
-            LYNTRIX
-            <span className="hidden sm:inline ml-2 font-['Fira_Code'] text-[10px] font-normal tracking-[0.14em] text-[var(--muted)]">
-              IT SERVICES
-            </span>
-          </span>
-        </a>
-
-        {/* Desktop links */}
-        <nav className="hidden lg:flex items-center gap-1" aria-label="Primary">
-          {NAV_LINKS.map((l) => (
-            <a
-              key={l.name}
-              href={l.href}
-              className="px-3 py-2 rounded-lg text-sm text-[var(--text-2)] hover:text-white hover:bg-white/5 transition-colors"
-            >
-              {l.name}
-            </a>
-          ))}
-        </nav>
-
-        {/* Desktop actions */}
-        <div className="hidden lg:flex items-center gap-2 shrink-0">
-          <button onClick={onOpenTracker} className="btn btn-ghost btn-sm" title="Track project status">
-            <Search className="w-4 h-4" />
-            <span className="hidden xl:inline">Track</span>
-          </button>
-
-          {currentUser ? (
-            <div className="flex items-center gap-1 rounded-[10px] border border-white/10 bg-white/[0.03] p-1">
-              <button
-                onClick={onOpenUserProfile}
-                className="flex items-center gap-2 pl-1 pr-2 h-8 rounded-md hover:bg-white/5 transition-colors"
-                title="Profile, password & proposals"
-              >
-                <span className="w-6 h-6 rounded-full bg-[var(--accent)] text-[var(--accent-ink)] text-[11px] font-bold grid place-items-center">
-                  {initial}
+      <div className={`transition-[padding] duration-500 ${scrolled || open ? 'pt-2 sm:pt-3' : 'pt-3 sm:pt-5'}`}>
+        <div className="container-x">
+          <div
+            className={`h-14 sm:h-[3.75rem] flex items-center justify-between gap-4 rounded-full border pl-3 pr-2 sm:pl-4 transition-[background-color,border-color,box-shadow] duration-500 ${
+              scrolled || open
+                ? 'bg-[#0e0e13]/75 backdrop-blur-xl border-white/[0.09] shadow-[0_12px_40px_-12px_rgba(0,0,0,0.8)]'
+                : 'bg-transparent border-transparent'
+            }`}
+          >
+            {/* Brand */}
+            <a href="#" className="flex items-center gap-2.5 shrink-0" aria-label="Lyntrix home">
+              <img src="/logo-icon.svg" alt="" className="w-8 h-8 object-contain" />
+              <span className="font-semibold text-[1.15rem] tracking-[-0.03em] text-white leading-none">
+                Lyntrix
+                <span className="hidden sm:inline ml-2 font-mono text-[10px] font-normal tracking-[0.14em] text-[var(--muted)] uppercase">
+                  IT Services
                 </span>
-                <span className="text-sm text-white max-w-[110px] truncate">{currentUser.name}</span>
-                {isAdminLoggedIn && <span className="chip chip-accent !py-0">Admin</span>}
-              </button>
+              </span>
+            </a>
+
+            {/* Desktop links */}
+            <nav className="hidden lg:flex items-center" aria-label="Primary">
+              {NAV_LINKS.map((l) => (
+                <a
+                  key={l.name}
+                  href={l.href}
+                  className="px-3.5 py-2 rounded-full text-sm text-[var(--text-2)] hover:text-white hover:bg-white/[0.06] transition-colors"
+                >
+                  {l.name}
+                </a>
+              ))}
+            </nav>
+
+            {/* Desktop actions */}
+            <div className="hidden lg:flex items-center gap-1.5 shrink-0">
               <button
-                onClick={onLogoutUser}
-                className="w-8 h-8 grid place-items-center rounded-md text-[var(--muted)] hover:text-rose-300 hover:bg-white/5 transition-colors"
-                title="Sign out"
-                aria-label="Sign out"
+                onClick={onOpenTracker}
+                className="w-9 h-9 grid place-items-center rounded-full text-[var(--text-2)] hover:text-white hover:bg-white/[0.06] transition-colors"
+                title="Track project status"
+                aria-label="Track project status"
               >
-                <LogOut className="w-4 h-4" />
+                <Search className="w-4 h-4" />
               </button>
+
+              {isAdminLoggedIn && (
+                <button
+                  onClick={onOpenAdminDashboard}
+                  className="w-9 h-9 grid place-items-center rounded-full text-[var(--accent)] hover:bg-white/[0.06] transition-colors"
+                  title="Open admin console"
+                  aria-label="Open admin console"
+                >
+                  <LayoutDashboard className="w-4 h-4" />
+                </button>
+              )}
+
+              {currentUser ? (
+                <div className="flex items-center gap-0.5 rounded-full border border-white/10 bg-white/[0.03] p-1">
+                  <button
+                    onClick={onOpenUserProfile}
+                    className="flex items-center gap-2 pl-0.5 pr-2.5 h-7 rounded-full hover:bg-white/5 transition-colors"
+                    title="Profile, password & proposals"
+                  >
+                    <span className="w-6 h-6 rounded-full bg-[image:var(--grad)] text-[var(--accent-ink)] text-[11px] font-semibold grid place-items-center">
+                      {initial}
+                    </span>
+                    <span className="text-sm text-white max-w-[110px] truncate">{currentUser.name}</span>
+                  </button>
+                  <button
+                    onClick={onLogoutUser}
+                    className="w-7 h-7 grid place-items-center rounded-full text-[var(--muted)] hover:text-rose-300 hover:bg-white/5 transition-colors"
+                    title="Sign out"
+                    aria-label="Sign out"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ) : (
+                <button onClick={onOpenAuth} className="px-3.5 h-9 rounded-full text-sm text-[var(--text-2)] hover:text-white hover:bg-white/[0.06] transition-colors">
+                  Sign in
+                </button>
+              )}
+
+              <a href="#contact" className="btn btn-primary btn-sm ml-1">
+                Get a proposal
+                <ArrowRight className="w-4 h-4" />
+              </a>
             </div>
-          ) : (
-            <button onClick={onOpenAuth} className="btn btn-ghost btn-sm">
-              <User className="w-4 h-4" />
-              <span>Sign in</span>
-            </button>
-          )}
 
-          {isAdminLoggedIn && (
-            <button onClick={onOpenAdminDashboard} className="btn btn-ghost btn-sm" title="Open admin console">
-              <LayoutDashboard className="w-4 h-4 text-[var(--accent)]" />
-              <span className="hidden xl:inline">Console</span>
+            {/* Mobile toggle */}
+            <button
+              onClick={() => setOpen((v) => !v)}
+              className="lg:hidden w-11 h-11 grid place-items-center rounded-full text-white hover:bg-white/5"
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              aria-expanded={open}
+            >
+              {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
-          )}
-
-          <a href="#contact" className="btn btn-primary btn-sm">
-            Get a proposal
-            <ArrowRight className="w-4 h-4" />
-          </a>
+          </div>
         </div>
-
-        {/* Mobile toggle */}
-        <button
-          onClick={() => setOpen((v) => !v)}
-          className="lg:hidden w-11 h-11 -mr-2 grid place-items-center rounded-xl text-white hover:bg-white/5"
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          aria-expanded={open}
-        >
-          {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
       </div>
 
       {/* Mobile sheet */}
       {open && (
-        <div className="lg:hidden fixed inset-x-0 bottom-0 top-16 bg-[#06080d]/98 overflow-y-auto overscroll-contain fade-up">
+        <div className="lg:hidden fixed inset-x-0 bottom-0 top-[4.5rem] bg-[#08080b]/[0.98] backdrop-blur-xl overflow-y-auto overscroll-contain fade-up">
           <div className="container-x py-6 pb-[max(2rem,env(safe-area-inset-bottom))] flex flex-col min-h-full">
             <nav className="flex flex-col" aria-label="Mobile">
               {[...NAV_LINKS, { name: 'Contact', href: '#contact' }].map((l) => (
@@ -167,7 +177,7 @@ export default function Navbar({
                   key={l.name}
                   href={l.href}
                   onClick={close}
-                  className="flex items-center justify-between py-4 border-b border-white/[0.06] font-['Outfit'] text-2xl font-medium text-white"
+                  className="flex items-center justify-between py-4 border-b border-white/[0.06] text-3xl font-medium tracking-[-0.04em] text-white"
                 >
                   {l.name}
                   <ArrowRight className="w-5 h-5 text-[var(--muted)]" />
@@ -179,7 +189,7 @@ export default function Navbar({
               {currentUser ? (
                 <div className="surface-2 p-4 space-y-3">
                   <div className="flex items-center gap-3">
-                    <span className="w-11 h-11 rounded-full bg-[var(--accent)] text-[var(--accent-ink)] font-bold grid place-items-center shrink-0">
+                    <span className="w-11 h-11 rounded-full bg-[image:var(--grad)] text-[var(--accent-ink)] font-semibold grid place-items-center shrink-0">
                       {initial}
                     </span>
                     <div className="min-w-0">

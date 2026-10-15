@@ -140,7 +140,7 @@ export function Modal({ title, eyebrow, onClose, children, footer, size = 'md' }
         <div className="flex items-start justify-between gap-4 p-5 sm:p-6 border-b border-[var(--line)]">
           <div className="min-w-0">
             {eyebrow && <div className="label break-all">{eyebrow}</div>}
-            <h3 className="font-['Outfit'] text-xl font-semibold text-white mt-1 leading-snug">{title}</h3>
+            <h3 className="font-sans text-xl font-semibold text-white mt-1 leading-snug">{title}</h3>
           </div>
           <button
             onClick={onClose}

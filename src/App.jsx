@@ -207,7 +207,7 @@ export default function App() {
   // Check if Full Maintenance Lock Overlay is active (and visitor is not Master Admin)
   if (maintenanceConfig.enabled && maintenanceConfig.mode === 'full' && !isAdminLoggedIn && viewMode !== 'admin') {
     return (
-      <div className="min-h-screen bg-[#07090e] text-slate-100 flex flex-col items-center justify-center p-6 relative overflow-hidden selection:bg-amber-500/30 selection:text-amber-300 font-sans">
+      <div className="min-h-screen bg-[var(--bg)] text-slate-100 flex flex-col items-center justify-center p-6 relative overflow-hidden selection:bg-amber-500/30 selection:text-amber-300 font-sans">
         <AmbientBackground intensity={0.6} />
 
         <div className="max-w-xl w-full glass-card p-6 sm:p-12 rounded-3xl border border-amber-500/30 text-center space-y-6 relative z-10 fade-up">
@@ -221,7 +221,7 @@ export default function App() {
               <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
               <span>SYSTEM UPGRADE IN PROGRESS</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-white font-['Outfit']">
+            <h1 className="text-3xl sm:text-4xl font-medium tracking-[-0.04em] text-white">
               Scheduled Platform Maintenance
             </h1>
           </div>
@@ -277,7 +277,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#07090e] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-300 relative">
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] relative">
       <IntroLoader />
       <ScrollProgress />
       <AmbientBackground />

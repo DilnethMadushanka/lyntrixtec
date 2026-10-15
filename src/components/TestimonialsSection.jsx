@@ -27,20 +27,26 @@ const REVIEWS = [
 
 export default function TestimonialsSection() {
   return (
-    <section className="section">
+    <section className="section section-tint">
       <div className="container-x">
         <SectionHeader index="07" label="Clients" title="Trusted by" accent="engineering leaders.">
           How we help technology teams ship faster and operate securely.
         </SectionHeader>
 
-        <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
-          {REVIEWS.map((r) => (
-            <figure key={r.name} className="surface p-6 sm:p-8 flex flex-col">
-              <span className="chip chip-accent self-start">{r.highlight}</span>
-              <blockquote className="mt-5 text-[var(--text)] leading-relaxed flex-1">“{r.text}”</blockquote>
-              <figcaption className="mt-6 pt-5 border-t border-[var(--line)] flex items-center gap-3">
-                <span className="w-10 h-10 rounded-full bg-[var(--surface-2)] border border-[var(--line-strong)] grid place-items-center font-['Outfit'] font-semibold text-[var(--accent)] shrink-0">
-                  {r.name.charAt(0)}
+        <div className="grid md:grid-cols-3 gap-3 sm:gap-4 md:pt-6">
+          {REVIEWS.map((r, i) => (
+            <figure
+              key={r.name}
+              className={`surface edge-light p-6 sm:p-8 flex flex-col ${i === 1 ? 'md:-translate-y-6 ring-grad' : ''}`}
+            >
+              <div className="flex items-center justify-between">
+                <span className="serif text-5xl leading-none h-9 -mb-3" aria-hidden="true">&ldquo;</span>
+                <span className="chip chip-accent">{r.highlight}</span>
+              </div>
+              <blockquote className="mt-6 text-[1.05rem] text-[var(--text)] leading-relaxed flex-1">{r.text}</blockquote>
+              <figcaption className="mt-8 pt-5 border-t border-[var(--line)] flex items-center gap-3">
+                <span className="w-10 h-10 rounded-full bg-[image:var(--grad)] grid place-items-center font-semibold text-[var(--accent-ink)] shrink-0">
+                  {r.name.replace('Dr. ', '').charAt(0)}
                 </span>
                 <span className="min-w-0">
                   <span className="block font-medium text-white text-sm">{r.name}</span>

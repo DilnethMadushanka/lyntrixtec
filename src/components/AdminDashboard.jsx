@@ -542,7 +542,7 @@ export default function AdminDashboard({ onLogout, onReturnToSite, onDataUpdated
           <ShieldCheck className="w-5 h-5" />
         </span>
         <div className="leading-tight">
-          <div className="font-['Outfit'] font-semibold tracking-[0.08em] text-white">LYNTRIX</div>
+          <div className="font-sans font-semibold tracking-[0.08em] text-white">LYNTRIX</div>
           <div className="label !text-[10px]">Admin console</div>
         </div>
       </div>
@@ -597,7 +597,7 @@ export default function AdminDashboard({ onLogout, onReturnToSite, onDataUpdated
       <header className="lg:hidden sticky top-0 z-40 h-14 px-4 flex items-center justify-between bg-[var(--bg)]/90 backdrop-blur-xl border-b border-[var(--line)]">
         <div className="flex items-center gap-2.5 min-w-0">
           <ShieldCheck className="w-5 h-5 text-[var(--accent)] shrink-0" />
-          <span className="font-['Outfit'] font-medium text-white truncate">{activeNav?.label}</span>
+          <span className="font-sans font-medium text-white truncate">{activeNav?.label}</span>
         </div>
         <button
           onClick={() => setNavOpen(true)}
@@ -839,7 +839,7 @@ export default function AdminDashboard({ onLogout, onReturnToSite, onDataUpdated
                   {services.map((serv) => (
                     <Panel key={serv.id} className="p-5 space-y-4">
                       <div className="flex items-start justify-between gap-3">
-                        <span className="font-['Outfit'] font-medium text-white">{serv.title}</span>
+                        <span className="font-sans font-medium text-white">{serv.title}</span>
                         {serv.badge && <Badge>{serv.badge}</Badge>}
                       </div>
                       <Field label="Base investment">
@@ -866,7 +866,7 @@ export default function AdminDashboard({ onLogout, onReturnToSite, onDataUpdated
                   <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
                     {addons.map((addon) => (
                       <Panel key={addon.id} className="p-5 space-y-4">
-                        <span className="font-['Outfit'] font-medium text-white block">{addon.name}</span>
+                        <span className="font-sans font-medium text-white block">{addon.name}</span>
                         <Field label="Price">
                           <div className="relative">
                             <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--muted)] font-mono">$</span>
@@ -976,7 +976,7 @@ export default function AdminDashboard({ onLogout, onReturnToSite, onDataUpdated
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 label !text-amber-300"><AlertTriangle className="w-4 h-4" /> Maintenance mode</div>
-                    <h3 className="font-['Outfit'] text-lg font-semibold text-white mt-1.5">Broadcast a maintenance notice</h3>
+                    <h3 className="font-sans text-lg font-semibold text-white mt-1.5">Broadcast a maintenance notice</h3>
                     <p className="text-sm text-[var(--muted)] mt-1">Notify visitors instantly when upgrading servers or deploying.</p>
                   </div>
                   <button
@@ -1053,7 +1053,7 @@ export default function AdminDashboard({ onLogout, onReturnToSite, onDataUpdated
                       <Badge tone="ok"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />{status}</Badge>
                     </div>
                     <div>
-                      <div className="font-['Outfit'] font-medium text-white">{name}</div>
+                      <div className="font-sans font-medium text-white">{name}</div>
                       <div className="text-xs text-[var(--muted)]">{sub}</div>
                     </div>
                     <dl className="pt-3 border-t border-[var(--line)] space-y-2 text-xs">
@@ -1072,7 +1072,7 @@ export default function AdminDashboard({ onLogout, onReturnToSite, onDataUpdated
               <Panel className="p-5 sm:p-7 space-y-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div>
-                    <h3 className="font-['Outfit'] text-lg font-semibold text-white">90-day availability</h3>
+                    <h3 className="font-sans text-lg font-semibold text-white">90-day availability</h3>
                     <p className="text-sm text-[var(--muted)]">Daily status for the past 90 days.</p>
                   </div>
                   <span className="text-sm text-emerald-300 font-medium">99.99% average</span>
@@ -1088,7 +1088,7 @@ export default function AdminDashboard({ onLogout, onReturnToSite, onDataUpdated
               {/* Logs */}
               <Panel className="p-5 sm:p-7 space-y-4">
                 <div className="flex items-center justify-between gap-3">
-                  <h3 className="font-['Outfit'] text-lg font-semibold text-white flex items-center gap-2"><Activity className="w-4 h-4 text-[var(--accent)]" /> Telemetry log</h3>
+                  <h3 className="font-sans text-lg font-semibold text-white flex items-center gap-2"><Activity className="w-4 h-4 text-[var(--accent)]" /> Telemetry log</h3>
                   <button onClick={() => setUptimeLogs([])} className="text-sm text-[var(--muted)] hover:text-white">Clear</button>
                 </div>
                 <div className="rounded-xl bg-[#05070a] border border-[var(--line)] p-4 font-mono text-xs space-y-2 max-h-64 overflow-y-auto">

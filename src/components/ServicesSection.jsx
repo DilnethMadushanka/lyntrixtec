@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Code2, Cloud, Shield, Compass, Headphones, ArrowRight, Check } from 'lucide-react';
+import React from 'react';
+import { Code2, Cloud, Shield, Compass, Headphones, ArrowUpRight, Check } from 'lucide-react';
 import SectionHeader from './SectionHeader';
 
 const SERVICES = [
@@ -77,101 +77,85 @@ const SERVICES = [
 
 const SLA = [
   ['Deployment', 'Zero downtime'],
-  ['Security standard', 'SOC 2 / ISO ready'],
-  ['Response target', '< 15 minutes'],
+  ['Security', 'SOC 2 / ISO ready'],
+  ['Response', '< 15 minutes'],
   ['Engineering', 'Assigned lead'],
 ];
 
-export default function ServicesSection() {
-  const [activeTab, setActiveTab] = useState(0);
-  const current = SERVICES[activeTab];
-  const Icon = current.icon;
+// Bento layout: a wide hero card beside one tile, then a row of three
+const SPAN = ['sm:col-span-2 lg:col-span-4', 'lg:col-span-2', 'lg:col-span-2', 'lg:col-span-2', 'sm:col-span-2 lg:col-span-2'];
 
+function ServiceCard({ service, index, featured }) {
+  const Icon = service.icon;
+  return (
+    <article
+      className={`surface surface-interactive edge-light group relative overflow-hidden p-6 sm:p-8 flex flex-col ${SPAN[index]} ${
+        featured ? 'ring-grad' : ''
+      }`}
+    >
+      <div className="flex items-start justify-between gap-4">
+        <span className="w-11 h-11 rounded-xl border border-[var(--line-strong)] bg-white/[0.03] text-[var(--accent)] grid place-items-center shrink-0 transition-colors group-hover:bg-[var(--accent-soft)]">
+          <Icon className="w-5 h-5" />
+        </span>
+        <span className="label">{String(index + 1).padStart(2, '0')} / {String(SERVICES.length).padStart(2, '0')}</span>
+      </div>
+
+      <div className={featured ? 'mt-10 sm:mt-14' : 'mt-8'}>
+        <span className="chip">{service.badge}</span>
+        <h3 className={`${featured ? 'h2 !text-[clamp(1.9rem,3.6vw,2.75rem)]' : 'h3'} mt-3`}>{service.title}</h3>
+        <p className={`mt-3 text-[var(--text-2)] leading-relaxed ${featured ? 'max-w-xl' : 'text-sm'}`}>{service.description}</p>
+      </div>
+
+      <ul className={`mt-6 grid gap-x-6 gap-y-2.5 ${featured ? 'sm:grid-cols-2' : ''}`}>
+        {(featured ? service.deliverables : service.deliverables.slice(0, 3)).map((item) => (
+          <li key={item} className="flex items-start gap-2.5 text-sm text-[var(--text)]">
+            <Check className="w-4 h-4 mt-0.5 text-[var(--accent)] shrink-0" />
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-auto pt-7 flex items-end justify-between gap-4">
+        <div className="flex flex-wrap gap-1.5">
+          {(featured ? service.tech : service.tech.slice(0, 3)).map((t) => (
+            <span key={t} className="chip">{t}</span>
+          ))}
+        </div>
+        <a
+          href="#contact"
+          aria-label={`Request a ${service.title.toLowerCase()} proposal`}
+          className="w-10 h-10 rounded-full border border-[var(--line-strong)] grid place-items-center shrink-0 text-[var(--text-2)] transition-all duration-300 group-hover:bg-[var(--text)] group-hover:text-[var(--accent-ink)] group-hover:border-[var(--text)]"
+        >
+          <ArrowUpRight className="w-4 h-4" />
+        </a>
+      </div>
+
+      {featured && (
+        <dl className="mt-8 pt-6 border-t border-[var(--line)] grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {SLA.map(([k, v]) => (
+            <div key={k}>
+              <dt className="label">{k}</dt>
+              <dd className="mt-1.5 text-sm text-[var(--text)] font-medium">{v}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+    </article>
+  );
+}
+
+export default function ServicesSection() {
   return (
     <section id="services" className="section">
       <div className="container-x">
-        <SectionHeader index="01" label="Services" title="Everything your stack needs," accent="under one team.">
+        <SectionHeader index="01" label="Services" title="Everything your stack needs," accent="under one roof.">
           End-to-end engineering across software, cloud, security and operations, built for reliability and steady growth.
         </SectionHeader>
 
-        <div role="tablist" aria-label="Services" className="rail mb-6 sm:mb-8">
-          {SERVICES.map((s, idx) => {
-            const TabIcon = s.icon;
-            return (
-              <button
-                key={s.id}
-                role="tab"
-                aria-selected={activeTab === idx}
-                onClick={() => setActiveTab(idx)}
-                className="tab"
-              >
-                <TabIcon className="w-4 h-4" />
-                {s.title}
-              </button>
-            );
-          })}
-        </div>
-
-        <div key={current.id} className="surface fade-up grid lg:grid-cols-12">
-          <div className="lg:col-span-7 p-6 sm:p-10 space-y-8">
-            <div className="flex items-start gap-4">
-              <span className="w-11 h-11 rounded-xl bg-[var(--accent-soft)] text-[var(--accent)] grid place-items-center shrink-0">
-                <Icon className="w-5 h-5" />
-              </span>
-              <div>
-                <span className="chip">{current.badge}</span>
-                <h3 className="h3 mt-2">{current.title}</h3>
-              </div>
-            </div>
-
-            <p className="text-[var(--text-2)] leading-relaxed">{current.description}</p>
-
-            <div>
-              <div className="label mb-3">Deliverables</div>
-              <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-3">
-                {current.deliverables.map((item) => (
-                  <li key={item} className="flex items-start gap-2.5 text-sm text-[var(--text)]">
-                    <Check className="w-4 h-4 mt-0.5 text-[var(--accent)] shrink-0" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <div className="label mb-3">Built with</div>
-              <div className="flex flex-wrap gap-2">
-                {current.tech.map((t) => (
-                  <span key={t} className="chip">{t}</span>
-                ))}
-              </div>
-            </div>
-
-            <a href="#contact" className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent)] hover:text-[var(--accent-strong)] group">
-              Request a {current.title.toLowerCase()} proposal
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </a>
-          </div>
-
-          <aside className="lg:col-span-5 border-t lg:border-t-0 lg:border-l border-[var(--line)] p-6 sm:p-10 bg-white/[0.015]">
-            <div className="flex items-center justify-between">
-              <span className="label">Service level</span>
-              <span className="flex items-center gap-2 text-xs text-[var(--ok)]">
-                <span className="w-1.5 h-1.5 rounded-full bg-[var(--ok)]" /> Guaranteed
-              </span>
-            </div>
-            <dl className="mt-4 divide-y divide-[var(--line)] text-sm">
-              {SLA.map(([k, v]) => (
-                <div key={k} className="flex items-center justify-between gap-4 py-3.5">
-                  <dt className="text-[var(--muted)]">{k}</dt>
-                  <dd className="text-[var(--text)] font-medium text-right">{v}</dd>
-                </div>
-              ))}
-            </dl>
-            <p className="mt-6 text-sm text-[var(--text-2)] leading-relaxed">
-              Every engagement includes an architecture review and dedicated post-deployment support.
-            </p>
-          </aside>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 sm:gap-4">
+          {SERVICES.map((s, i) => (
+            <ServiceCard key={s.id} service={s} index={i} featured={i === 0} />
+          ))}
         </div>
       </div>
     </section>

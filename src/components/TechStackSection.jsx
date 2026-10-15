@@ -50,16 +50,19 @@ export default function TechStackSection() {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          {list.map((tech) => (
-            <div key={tech.name} className="surface surface-interactive fade-up p-5 rounded-[var(--radius)]">
-              <div className="flex items-start justify-between gap-3">
-                <h3 className="font-['Outfit'] font-medium text-white text-base leading-snug">{tech.name}</h3>
-                <span className="chip shrink-0">{tech.badge}</span>
+        <div className="rounded-[var(--radius-lg)] border border-[var(--line)] overflow-hidden">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[var(--line)]">
+            {list.map((tech) => (
+              <div key={tech.name} className="group bg-[var(--bg)] hover:bg-[var(--surface)] transition-colors duration-300 fade-up p-5 sm:p-6 min-h-[9.5rem] flex flex-col">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="label">{tech.badge}</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--line-strong)] transition-colors group-hover:bg-[var(--accent)]" aria-hidden="true" />
+                </div>
+                <h3 className="mt-auto pt-6 font-medium text-white text-lg tracking-[-0.03em] leading-snug">{tech.name}</h3>
+                <p className="mt-1.5 text-sm text-[var(--muted)] leading-relaxed">{tech.desc}</p>
               </div>
-              <p className="mt-2 text-sm text-[var(--muted)] leading-relaxed">{tech.desc}</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>

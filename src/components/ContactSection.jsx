@@ -127,7 +127,7 @@ export default function ContactSection({ estimateData, onInquirySubmitted, curre
     setIsSubmitting(false);
     setSubmitted(true);
     try {
-      confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 }, colors: ['#38bdf8', '#818cf8', '#ffffff'] });
+      confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 }, colors: ['#38bdf8', '#818cf8', '#c084fc', '#ffffff'] });
     } catch (err) {
       // confetti is decorative
     }
@@ -147,19 +147,19 @@ export default function ContactSection({ estimateData, onInquirySubmitted, curre
                 <span className="rule" aria-hidden="true" />
                 <span>Contact</span>
               </div>
-              <h2 className="h2 mt-4">
-                Let’s build your <span className="accent">next platform.</span>
+              <h2 className="h2 mt-5 !text-[clamp(2.4rem,6vw,4.5rem)]">
+                Let’s build your <span className="serif">next platform.</span>
               </h2>
               <p className="lead mt-5">
                 Accelerating software delivery, migrating to cloud or locking down security? Talk directly with our lead architects.
               </p>
             </div>
 
-            <ul className="surface divide-y divide-[var(--line)] overflow-hidden">
+            <ul className="border-y border-[var(--line)] divide-y divide-[var(--line)]">
               {CHANNELS.map(({ icon: Icon, label, value, href, external }) => {
                 const inner = (
                   <>
-                    <span className="w-10 h-10 rounded-xl bg-[var(--accent-soft)] text-[var(--accent)] grid place-items-center shrink-0">
+                    <span className="w-11 h-11 rounded-full border border-[var(--line-strong)] text-[var(--accent)] grid place-items-center shrink-0 transition-colors group-hover:bg-[var(--text)] group-hover:text-[var(--accent-ink)] group-hover:border-[var(--text)]">
                       <Icon className="w-5 h-5" />
                     </span>
                     <span className="min-w-0">
@@ -174,12 +174,12 @@ export default function ContactSection({ estimateData, onInquirySubmitted, curre
                       <a
                         href={href}
                         {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                        className="flex items-center gap-4 p-4 sm:p-5 hover:bg-white/[0.03] transition-colors"
+                        className="group flex items-center gap-4 py-5 transition-colors"
                       >
                         {inner}
                       </a>
                     ) : (
-                      <div className="flex items-center gap-4 p-4 sm:p-5">{inner}</div>
+                      <div className="flex items-center gap-4 py-5">{inner}</div>
                     )}
                   </li>
                 );
@@ -193,7 +193,7 @@ export default function ContactSection({ estimateData, onInquirySubmitted, curre
           </div>
 
           {/* Right */}
-          <div className="lg:col-span-7 surface p-5 sm:p-8 lg:p-10 w-full">
+          <div className="lg:col-span-7 surface ring-grad p-5 sm:p-8 lg:p-10 w-full">
             {submitted ? (
               <div className="py-8 sm:py-12 text-center space-y-4 fade-up">
                 <div className="w-14 h-14 rounded-full bg-[var(--ok)]/10 text-[var(--ok)] border border-[var(--ok)]/30 grid place-items-center mx-auto">
@@ -235,7 +235,7 @@ export default function ContactSection({ estimateData, onInquirySubmitted, curre
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div role="tablist" aria-label="Request type" className="grid sm:grid-cols-2 gap-1.5 p-1.5 rounded-xl bg-[var(--surface-2)] border border-[var(--line)]">
+                <div role="tablist" aria-label="Request type" className="grid sm:grid-cols-2 gap-1 p-1 rounded-full bg-white/[0.03] border border-[var(--line)]">
                   {[
                     { id: 'proposal', icon: Send, label: 'Technical proposal' },
                     { id: 'consultation_only', icon: Calendar, label: 'Free consultation only' },
@@ -246,11 +246,11 @@ export default function ContactSection({ estimateData, onInquirySubmitted, curre
                       role="tab"
                       aria-selected={formTab === id}
                       onClick={() => setFormTab(id)}
-                      className={`min-h-[2.75rem] px-3 rounded-lg text-sm font-medium flex items-center justify-center gap-2 transition-colors ${
-                        formTab === id ? 'bg-white/10 text-white' : 'text-[var(--muted)] hover:text-white'
+                      className={`min-h-[2.75rem] px-3 rounded-full text-sm font-medium flex items-center justify-center gap-2 transition-colors ${
+                        formTab === id ? 'bg-[var(--text)] text-[var(--accent-ink)]' : 'text-[var(--muted)] hover:text-white'
                       }`}
                     >
-                      <Icon className={`w-4 h-4 ${formTab === id ? 'text-[var(--accent)]' : ''}`} />
+                      <Icon className="w-4 h-4" />
                       {label}
                     </button>
                   ))}
@@ -305,7 +305,7 @@ export default function ContactSection({ estimateData, onInquirySubmitted, curre
                   />
                 </Field>
 
-                <div className="p-4 sm:p-5 rounded-xl border border-[var(--line)] bg-[var(--surface-2)] space-y-4">
+                <div className="p-4 sm:p-5 rounded-2xl border border-[var(--line)] bg-white/[0.02] space-y-4">
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <div className="flex items-center gap-2 text-sm font-medium text-white">
                       <Calendar className="w-4 h-4 text-[var(--accent)]" />

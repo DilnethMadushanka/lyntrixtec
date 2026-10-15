@@ -246,7 +246,7 @@ export default function UserProfileModal({ isOpen, onClose, currentUser, onProfi
 
           <div className="text-center sm:text-left space-y-1 w-full">
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 sm:gap-2">
-              <h3 className="text-lg sm:text-xl font-bold text-white font-['Outfit']">{currentUser.name}</h3>
+              <h3 className="text-lg sm:text-xl font-bold text-white font-sans">{currentUser.name}</h3>
               <span className="text-xs font-mono text-cyan-400 font-bold bg-cyan-950/60 px-2 py-0.5 rounded-md border border-cyan-800/80">
                 @{currentUser.username || currentUser.email?.split('@')[0]}
               </span>

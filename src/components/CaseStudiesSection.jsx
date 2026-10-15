@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { ArrowRight, Check, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Check, X } from 'lucide-react';
 import SectionHeader from './SectionHeader';
 
 const CASE_STUDIES = [
@@ -82,7 +82,7 @@ function CaseModal({ study, onClose }) {
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[70] flex items-end sm:items-center justify-center bg-black/70 backdrop-blur-sm sm:p-6"
+      className="fixed inset-0 z-[70] flex items-end sm:items-center justify-center bg-black/75 backdrop-blur-md sm:p-6"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -127,7 +127,7 @@ function CaseModal({ study, onClose }) {
             </ul>
           </div>
           <figure className="border-l-2 border-[var(--accent)] pl-4">
-            <blockquote className="text-[var(--text)] italic">“{f.quote}”</blockquote>
+            <blockquote className="serif-plain text-xl leading-snug text-[var(--text)]">“{f.quote}”</blockquote>
             <figcaption className="mt-2 text-xs text-[var(--muted)]">{f.author}</figcaption>
           </figure>
         </div>
@@ -154,49 +154,53 @@ export default function CaseStudiesSection() {
           How we help organizations overcome complex technical challenges and scale without drama.
         </SectionHeader>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-          {CASE_STUDIES.map((cs) => (
-            <article
-              key={cs.id}
-              className="surface surface-interactive overflow-hidden flex flex-col group"
-            >
-              <div className="relative aspect-[16/10] overflow-hidden bg-[var(--surface-2)]">
-                <img
-                  src={cs.image}
-                  alt=""
-                  loading="lazy"
-                  className="w-full h-full object-cover opacity-70 transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[var(--surface)] via-transparent to-transparent" />
-                <span className="absolute top-3 left-3 chip bg-black/60 backdrop-blur">{cs.category}</span>
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+          {CASE_STUDIES.map((cs, i) => {
+            const [headline, ...rest] = cs.impact;
+            return (
+              <article key={cs.id} className="surface surface-interactive edge-light overflow-hidden flex flex-col group">
+                <button onClick={() => setSelected(cs)} className="text-left flex flex-col flex-1" aria-label={`Read case study: ${cs.title}`}>
+                  <div className="relative aspect-[4/3] overflow-hidden bg-[var(--surface-2)]">
+                    <img
+                      src={cs.image}
+                      alt=""
+                      loading="lazy"
+                      className="w-full h-full object-cover grayscale opacity-60 transition-all duration-[1.2s] ease-[var(--ease)] group-hover:scale-105 group-hover:grayscale-0 group-hover:opacity-80"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--surface)] via-[var(--surface)]/30 to-transparent" />
+                    <div className="absolute inset-x-5 top-5 flex items-center justify-between">
+                      <span className="chip bg-black/50 backdrop-blur">{cs.category}</span>
+                      <span className="font-mono text-xs text-white/60">{String(i + 1).padStart(2, '0')}</span>
+                    </div>
+                    <div className="absolute inset-x-5 bottom-4">
+                      <div className="text-[clamp(1.9rem,3.4vw,2.5rem)] font-medium tracking-[-0.05em] leading-none text-white">{headline}</div>
+                    </div>
+                  </div>
 
-              <div className="p-5 sm:p-6 flex flex-col flex-1">
-                <div className="label">{cs.client}</div>
-                <h3 className="font-['Outfit'] text-xl font-semibold text-white leading-snug mt-2">{cs.title}</h3>
-                <p className="mt-3 text-sm text-[var(--text-2)] leading-relaxed">{cs.summary}</p>
+                  <div className="p-5 sm:p-6 flex flex-col flex-1">
+                    <div className="label">{cs.client}</div>
+                    <h3 className="text-xl font-medium tracking-[-0.03em] text-white leading-snug mt-2">{cs.title}</h3>
+                    <p className="mt-3 text-sm text-[var(--text-2)] leading-relaxed">{cs.summary}</p>
 
-                <ul className="mt-5 space-y-1.5">
-                  {cs.impact.map((imp) => (
-                    <li key={imp} className="flex items-center gap-2 text-sm text-[var(--text)]">
-                      <span className="w-1 h-1 rounded-full bg-[var(--accent)] shrink-0" />
-                      {imp}
-                    </li>
-                  ))}
-                </ul>
+                    <div className="mt-5 flex flex-wrap gap-1.5">
+                      {rest.map((imp) => (
+                        <span key={imp} className="chip">{imp}</span>
+                      ))}
+                    </div>
 
-                <div className="mt-auto pt-6">
-                  <button
-                    onClick={() => setSelected(cs)}
-                    className="w-full pt-5 border-t border-[var(--line)] flex items-center justify-between text-sm font-semibold text-[var(--accent)] hover:text-[var(--accent-strong)]"
-                  >
-                    Read the full story
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                  </button>
-                </div>
-              </div>
-            </article>
-          ))}
+                    <div className="mt-auto pt-6">
+                      <span className="pt-5 border-t border-[var(--line)] flex items-center justify-between text-sm font-medium text-white">
+                        Read the full story
+                        <span className="w-9 h-9 rounded-full border border-[var(--line-strong)] grid place-items-center transition-all duration-300 group-hover:bg-[var(--text)] group-hover:text-[var(--accent-ink)] group-hover:border-[var(--text)]">
+                          <ArrowUpRight className="w-4 h-4" />
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </button>
+              </article>
+            );
+          })}
         </div>
       </div>
 

@@ -408,7 +408,7 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode 
              mode === 'forgot_password' || mode === 'set_new_password' ? <Key className="w-6 h-6" /> :
              <User className="w-6 h-6" />}
           </div>
-          <h3 className="text-2xl font-extrabold text-white font-['Outfit']">
+          <h3 className="text-2xl font-extrabold text-white font-sans">
             {mode === 'signin' ? 'Client Portal Sign In' :
              mode === 'signup' ? 'Create Enterprise Account' :
              mode === 'forgot_password' ? 'Account Recovery' :

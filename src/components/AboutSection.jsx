@@ -17,53 +17,48 @@ export default function AboutSection() {
   return (
     <section id="about" className="section section-tint">
       <div className="container-x">
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
-          <div className="lg:col-span-5 max-w-sm sm:max-w-md mx-auto lg:max-w-none w-full">
-            <div className="surface p-3 sm:p-4">
-              <div className="relative rounded-[calc(var(--radius-lg)-8px)] overflow-hidden bg-[#05060a] aspect-square grid place-items-center">
-                <img
-                  src="/logo.jpg"
-                  alt="Lyntrix Technologies emblem"
-                  loading="lazy"
-                  className="w-full h-full object-contain p-6 sm:p-8"
-                />
-                <div className="absolute inset-x-3 bottom-3 sm:inset-x-4 sm:bottom-4 px-4 py-3 rounded-xl bg-black/60 backdrop-blur border border-white/10 text-center">
-                  <div className="label !text-[var(--accent)]">Lyntrix Technologies</div>
-                  <div className="text-xs text-[var(--text-2)] mt-1">Smart solutions. Stronger tomorrow.</div>
-                </div>
-              </div>
+        <div className="eyebrow">
+          <span className="idx">06</span>
+          <span className="rule" aria-hidden="true" />
+          <span>About</span>
+        </div>
+
+        <p className="mt-6 text-[clamp(1.75rem,4.4vw,3.4rem)] leading-[1.08] tracking-[-0.04em] font-medium text-white max-w-5xl">
+          Lyntrix engineers robust, secure, future-proof software and infrastructure for organizations navigating
+          digital transformation, <span className="text-[var(--muted)]">bridging complex engineering with</span>{' '}
+          <span className="serif">effortless experiences.</span>
+        </p>
+
+        <div className="mt-14 sm:mt-20 grid lg:grid-cols-12 gap-4 items-stretch">
+          <div className="lg:col-span-4 surface edge-light overflow-hidden relative min-h-[18rem]">
+            <img
+              src="/logo.jpg"
+              alt="Lyntrix Technologies emblem"
+              loading="lazy"
+              className="absolute inset-0 w-full h-full object-contain p-10 sm:p-12"
+            />
+            <div className="absolute inset-x-4 bottom-4 px-4 py-3 rounded-xl bg-black/60 backdrop-blur border border-white/10">
+              <div className="label !text-[var(--accent)]">Lyntrix Technologies</div>
+              <div className="serif-plain text-[var(--text-2)] mt-0.5">Smart solutions. Stronger tomorrow.</div>
             </div>
           </div>
 
-          <div className="lg:col-span-7">
-            <div className="eyebrow">
-              <span className="idx">06</span>
-              <span className="rule" aria-hidden="true" />
-              <span>About</span>
-            </div>
-            <h2 className="h2 mt-4">
-              Architecting digital resilience and <span className="accent">technological growth.</span>
-            </h2>
-            <p className="lead mt-5">
-              <strong className="text-white font-semibold">Lyntrix IT Services</strong> engineers robust, secure,
-              future-proof software and infrastructure for organizations navigating digital transformation. We bridge
-              complex engineering with effortless user experiences.
-            </p>
-
-            <div className="mt-8 grid sm:grid-cols-3 gap-3">
-              {PILLARS.map(({ icon: Icon, title, text }) => (
-                <div key={title} className="surface-2 p-4">
+          <div className="lg:col-span-8 grid sm:grid-cols-3 gap-4">
+            {PILLARS.map(({ icon: Icon, title, text }, i) => (
+              <div key={title} className="surface surface-interactive edge-light p-6 flex flex-col">
+                <div className="flex items-center justify-between">
                   <Icon className="w-5 h-5 text-[var(--accent)]" />
-                  <div className="font-['Outfit'] font-medium text-white mt-3">{title}</div>
-                  <p className="text-sm text-[var(--muted)] mt-1 leading-relaxed">{text}</p>
+                  <span className="label">0{i + 1}</span>
                 </div>
-              ))}
-            </div>
+                <div className="mt-auto pt-10 text-2xl font-medium tracking-[-0.04em] text-white">{title}</div>
+                <p className="text-sm text-[var(--muted)] mt-2 leading-relaxed">{text}</p>
+              </div>
+            ))}
 
-            <ul className="mt-8 space-y-3">
+            <ul className="sm:col-span-3 surface p-6 grid sm:grid-cols-3 gap-5">
               {PROMISES.map((p) => (
-                <li key={p} className="flex items-start gap-3 text-sm sm:text-base text-[var(--text-2)]">
-                  <Check className="w-4 h-4 mt-1 text-[var(--accent)] shrink-0" />
+                <li key={p} className="flex items-start gap-3 text-sm text-[var(--text-2)] leading-relaxed">
+                  <Check className="w-4 h-4 mt-0.5 text-[var(--accent)] shrink-0" />
                   {p}
                 </li>
               ))}

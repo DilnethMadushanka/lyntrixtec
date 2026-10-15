@@ -25,8 +25,8 @@ function Step({ n, title, children }) {
   return (
     <fieldset className="space-y-3 min-w-0">
       <legend className="flex items-center gap-2.5 mb-3">
-        <span className="w-5 h-5 rounded-full border border-[var(--line-strong)] text-[10px] font-mono text-[var(--muted)] grid place-items-center">{n}</span>
-        <span className="label !text-[var(--text-2)]">{title}</span>
+        <span className="font-mono text-xs text-[var(--accent)]">0{n}</span>
+        <span className="text-sm font-medium text-white">{title}</span>
       </legend>
       {children}
     </fieldset>
@@ -41,7 +41,7 @@ function Option({ selected, onClick, children, className = '', multi = false }) 
       aria-checked={selected}
       onClick={onClick}
       className={`surface-interactive w-full text-left p-3.5 rounded-xl border flex items-center justify-between gap-3 min-h-[3rem] ${
-        selected ? 'border-[var(--accent)] bg-[var(--accent-soft)] text-white' : 'border-[var(--line)] bg-[var(--surface-2)] text-[var(--text-2)]'
+        selected ? 'border-[var(--accent)]/70 bg-[var(--accent-soft)] text-white' : 'border-[var(--line)] bg-white/[0.02] text-[var(--text-2)]'
       } ${className}`}
     >
       <span className="min-w-0 text-sm">{children}</span>
@@ -61,7 +61,7 @@ export default function InteractiveCostCalculator({ onSelectEstimate, dbTrigger 
   const [scale, setScale] = useState('growth');
   const [cloudEnv, setCloudEnv] = useState('aws');
   const [supportTier, setSupportTier] = useState('premium');
-  const [selectedAddons, setSelectedAddons] = useState(['security_audit', 'ci_cd']);
+  const [selectedAddons, setSelectedAddons] = useState(['compliance', 'cicd']);
   const [submitted, setSubmitted] = useState(false);
 
   // Dynamic DB prices
@@ -108,7 +108,7 @@ export default function InteractiveCostCalculator({ onSelectEstimate, dbTrigger 
 
   const handleRequestQuote = () => {
     try {
-      confetti({ particleCount: 80, spread: 70, origin: { y: 0.7 }, colors: ['#38bdf8', '#818cf8', '#ffffff'] });
+      confetti({ particleCount: 80, spread: 70, origin: { y: 0.7 }, colors: ['#38bdf8', '#818cf8', '#c084fc', '#ffffff'] });
     } catch (e) {
       // confetti is decorative
     }
@@ -132,7 +132,7 @@ export default function InteractiveCostCalculator({ onSelectEstimate, dbTrigger 
         </SectionHeader>
 
         <div className="grid lg:grid-cols-12 gap-6 items-start">
-          <div className="lg:col-span-8 surface p-5 sm:p-8 space-y-8">
+          <div className="lg:col-span-8 surface edge-light p-5 sm:p-8 space-y-9">
             <Step n="1" title="Primary service area">
               <div role="radiogroup" className="grid sm:grid-cols-2 gap-2.5">
                 {serviceOptions.map((s) => (
@@ -181,7 +181,7 @@ export default function InteractiveCostCalculator({ onSelectEstimate, dbTrigger 
               <div className="grid sm:grid-cols-2 gap-2.5">
                 {dbAddons.map((addon) => (
                   <Option key={addon.id} multi selected={selectedAddons.includes(addon.id)} onClick={() => toggleAddon(addon.id)}>
-                    <span className="font-medium">{addon.name}</span>
+                    <span className="font-medium">{addon.title || addon.name}</span>
                     <span className="block text-xs text-[var(--muted)] font-mono mt-0.5">+${addon.price.toLocaleString()}</span>
                   </Option>
                 ))}
@@ -191,13 +191,15 @@ export default function InteractiveCostCalculator({ onSelectEstimate, dbTrigger 
 
           {/* Summary */}
           <aside className="lg:col-span-4 lg:sticky lg:top-24">
-            <div className="surface p-5 sm:p-6">
-              <div className="label">Estimated investment</div>
+            <div className="surface ring-grad overflow-hidden p-5 sm:p-7 relative">
+              <span className="absolute -top-24 -right-24 w-56 h-56 rounded-full bg-[#818cf8]/20 blur-3xl pointer-events-none" aria-hidden="true" />
+              <div className="label relative">Estimated investment</div>
               <div className="mt-4">
-                <div className="stat !text-[clamp(1.6rem,3.4vw,2.25rem)] tabular-nums break-words">
-                  ${min.toLocaleString()} – ${max.toLocaleString()}
+                <div className="stat !text-[clamp(2rem,3.6vw,2.6rem)] tabular-nums break-words">
+                  ${min.toLocaleString()}
+                  <span className="block text-[var(--muted)] text-[0.55em] tracking-[-0.03em] mt-1">to ${max.toLocaleString()}</span>
                 </div>
-                <div className="mt-2 text-sm text-[var(--ok)]">Delivery: {selectedScale.duration}</div>
+                <div className="mt-4 chip chip-accent">Delivery · {selectedScale.duration}</div>
               </div>
 
               <dl className="mt-6 pt-5 border-t border-[var(--line)] space-y-3 text-sm">

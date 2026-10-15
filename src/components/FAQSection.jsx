@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Plus } from 'lucide-react';
-import SectionHeader from './SectionHeader';
 
 const CATEGORIES = [
   { id: 'engagement', label: 'Engagement' },
@@ -59,47 +58,73 @@ export default function FAQSection() {
   const items = FAQS[category] || FAQS.engagement;
 
   return (
-    <section id="faq" className="section section-tint">
-      <div className="container-x max-w-4xl">
-        <SectionHeader index="08" label="FAQ" title="Frequently asked" accent="questions.">
-          Engineering standards, IP ownership and SLAs, answered plainly.
-        </SectionHeader>
+    <section id="faq" className="section">
+      <div className="container-x">
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+          <div className="lg:col-span-4 lg:sticky lg:top-28">
+            <div className="eyebrow">
+              <span className="idx">08</span>
+              <span className="rule" aria-hidden="true" />
+              <span>FAQ</span>
+            </div>
+            <h2 className="h2 mt-5">
+              Questions, <span className="serif">answered plainly.</span>
+            </h2>
+            <p className="lead mt-5">Engineering standards, IP ownership and SLAs. Anything else, ask us directly.</p>
+            <a href="#contact" className="btn btn-ghost mt-7">Ask a question</a>
+          </div>
 
-        <div role="tablist" aria-label="FAQ categories" className="rail mb-6">
-          {CATEGORIES.map((c) => (
-            <button
-              key={c.id}
-              role="tab"
-              aria-selected={category === c.id}
-              onClick={() => { setCategory(c.id); setOpenIndex(0); }}
-              className="tab"
-            >
-              {c.label}
-            </button>
-          ))}
-        </div>
-
-        <div className="surface divide-y divide-[var(--line)] overflow-hidden">
-          {items.map((faq, idx) => {
-            const isOpen = openIndex === idx;
-            return (
-              <div key={faq.q}>
+          <div className="lg:col-span-8">
+            <div role="tablist" aria-label="FAQ categories" className="rail mb-6">
+              {CATEGORIES.map((c) => (
                 <button
-                  onClick={() => setOpenIndex(isOpen ? -1 : idx)}
-                  aria-expanded={isOpen}
-                  className="w-full px-5 sm:px-7 py-5 text-left flex items-center justify-between gap-6 hover:bg-white/[0.02] transition-colors"
+                  key={c.id}
+                  role="tab"
+                  aria-selected={category === c.id}
+                  onClick={() => { setCategory(c.id); setOpenIndex(0); }}
+                  className="tab"
                 >
-                  <span className="font-['Outfit'] font-medium text-white text-base sm:text-lg leading-snug">{faq.q}</span>
-                  <Plus className={`w-5 h-5 shrink-0 text-[var(--muted)] transition-transform duration-300 ${isOpen ? 'rotate-45 text-[var(--accent)]' : ''}`} />
+                  {c.label}
                 </button>
-                <div className={`grid transition-[grid-template-rows] duration-300 ease-out ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
-                  <div className="overflow-hidden">
-                    <p className="px-5 sm:px-7 pb-6 text-[var(--text-2)] leading-relaxed max-w-3xl">{faq.a}</p>
+              ))}
+            </div>
+
+            <div className="border-t border-[var(--line)]">
+              {items.map((faq, idx) => {
+                const isOpen = openIndex === idx;
+                return (
+                  <div key={faq.q} className="border-b border-[var(--line)]">
+                    <button
+                      onClick={() => setOpenIndex(isOpen ? -1 : idx)}
+                      aria-expanded={isOpen}
+                      className="group w-full py-6 text-left flex items-start justify-between gap-6"
+                    >
+                      <span className="flex gap-5">
+                        <span className={`font-mono text-xs pt-1.5 ${isOpen ? 'text-[var(--accent)]' : 'text-[var(--muted)]'}`}>
+                          {String(idx + 1).padStart(2, '0')}
+                        </span>
+                        <span className={`text-lg sm:text-xl font-medium tracking-[-0.03em] leading-snug transition-colors ${isOpen ? 'text-white' : 'text-[var(--text-2)] group-hover:text-white'}`}>
+                          {faq.q}
+                        </span>
+                      </span>
+                      <span
+                        className={`w-9 h-9 rounded-full border grid place-items-center shrink-0 transition-all duration-300 ${
+                          isOpen ? 'bg-[var(--text)] border-[var(--text)] text-[var(--accent-ink)] rotate-45' : 'border-[var(--line-strong)] text-[var(--muted)]'
+                        }`}
+                      >
+                        <Plus className="w-4 h-4" />
+                      </span>
+                    </button>
+                    <div className={`grid transition-[grid-template-rows] duration-500 ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
+                      <div className="overflow-hidden">
+                        <p className="pl-9 sm:pl-10 pr-4 sm:pr-12 pb-7 text-[var(--text-2)] leading-relaxed max-w-2xl">{faq.a}</p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            );
-          })}
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </section>

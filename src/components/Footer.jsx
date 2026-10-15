@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowUp, LayoutDashboard } from 'lucide-react';
+import { ArrowUp, ArrowUpRight, LayoutDashboard } from 'lucide-react';
 
 const COLUMNS = [
   {
@@ -42,15 +42,26 @@ export default function Footer({ isAdminLoggedIn, onOpenAdminDashboard }) {
   }, []);
 
   return (
-    <footer className="relative z-10 border-t border-[var(--line)] bg-[#06070a]/80 backdrop-blur-sm">
-      <div className="container-x pt-14 sm:pt-20 pb-[max(2rem,env(safe-area-inset-bottom))]">
+    <footer className="relative z-10 border-t border-[var(--line)] bg-[#060609] overflow-hidden">
+      <span
+        className="absolute left-1/2 -translate-x-1/2 -bottom-64 w-[70rem] h-[28rem] rounded-full bg-[radial-gradient(closest-side,rgba(129,140,248,0.22),transparent)] blur-2xl pointer-events-none"
+        aria-hidden="true"
+      />
+      <div className="container-x relative pt-16 sm:pt-24 pb-[max(2rem,env(safe-area-inset-bottom))]">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-14 sm:pb-20 mb-14 sm:mb-16 border-b border-[var(--line)]">
+          <h2 className="h2 max-w-2xl">
+            Have a system that needs to <span className="serif">scale?</span>
+          </h2>
+          <a href="#contact" className="btn btn-primary !min-h-[3.25rem] !px-6 self-start md:self-auto">
+            Start a project <ArrowUpRight className="w-4 h-4" />
+          </a>
+        </div>
+
         <div className="grid grid-cols-2 lg:grid-cols-12 gap-x-6 gap-y-10">
           <div className="col-span-2 lg:col-span-5 space-y-5">
             <div className="flex items-center gap-2.5">
-              <span className="w-9 h-9 rounded-[10px] bg-[var(--surface-2)] border border-white/10 p-1.5 grid place-items-center">
-                <img src="/logo-icon.svg" alt="" className="w-full h-full object-contain" />
-              </span>
-              <span className="font-['Outfit'] font-semibold text-lg tracking-[0.08em] text-white">LYNTRIX</span>
+              <img src="/logo-icon.svg" alt="" className="w-8 h-8 object-contain" />
+              <span className="font-semibold text-lg tracking-[-0.03em] text-white">Lyntrix</span>
             </div>
             <p className="text-sm text-[var(--muted)] max-w-sm leading-relaxed">
               Resilient custom software, high-concurrency cloud architecture and zero-trust security for modern organizations.
@@ -91,11 +102,11 @@ export default function Footer({ isAdminLoggedIn, onOpenAdminDashboard }) {
 
           {COLUMNS.map((col) => (
             <nav key={col.title} className="lg:col-span-2 lg:col-start-auto" aria-label={col.title}>
-              <div className="label !text-white">{col.title}</div>
+              <div className="label">{col.title}</div>
               <ul className="mt-4 space-y-3 text-sm">
                 {col.links.map(([name, href]) => (
                   <li key={name}>
-                    <a href={href} className="text-[var(--muted)] hover:text-white transition-colors">
+                    <a href={href} className="text-[var(--text-2)] hover:text-white transition-colors">
                       {name}
                     </a>
                   </li>
@@ -105,8 +116,8 @@ export default function Footer({ isAdminLoggedIn, onOpenAdminDashboard }) {
           ))}
 
           <div className="col-span-2 lg:col-span-3">
-            <div className="label !text-white">Operations</div>
-            <div className="mt-4 surface-2 p-4 text-sm space-y-2.5">
+            <div className="label">Operations</div>
+            <div className="mt-4 rounded-2xl border border-[var(--line)] bg-white/[0.02] p-4 text-sm space-y-2.5">
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-2 text-[var(--ok)]">
                   <span className="w-1.5 h-1.5 rounded-full bg-[var(--ok)]" /> SOC online
@@ -140,6 +151,7 @@ export default function Footer({ isAdminLoggedIn, onOpenAdminDashboard }) {
           </div>
         </div>
       </div>
+      <div className="wordmark relative" aria-hidden="true">Lyntrix</div>
     </footer>
   );
 }

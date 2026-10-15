@@ -77,7 +77,7 @@ export default function ProjectTrackerModal({ isOpen, onClose }) {
           <div className="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center mx-auto border border-cyan-500/30">
             <Search className="w-6 h-6" />
           </div>
-          <h3 className="text-2xl font-extrabold text-white font-['Outfit']">Project Status Tracker</h3>
+          <h3 className="text-2xl font-extrabold text-white font-sans">Project Status Tracker</h3>
           <p className="text-xs text-slate-400 font-mono">ENTER YOUR UNIQUE PROPOSAL / TRACKING ID</p>
         </div>
 
@@ -117,7 +117,7 @@ export default function ProjectTrackerModal({ isOpen, onClose }) {
               <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between">
                 <div>
                   <span className="text-[10px] font-mono text-cyan-400">{searchResult.id}</span>
-                  <div className="text-base font-bold text-white font-['Outfit']">{searchResult.name}</div>
+                  <div className="text-base font-bold text-white font-sans">{searchResult.name}</div>
                   <div className="text-xs text-slate-400 font-mono">{searchResult.service}</div>
                 </div>
 
