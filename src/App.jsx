@@ -94,7 +94,7 @@ export default function App() {
 
   // 1-Click Magic Email Verification Link Listener & Cloud DB Sync
   useEffect(() => {
-    // Background sync with Supabase Cloud DB
+    // Background sync with Cloud Firestore
     db.syncWithCloud().then(() => {
       setDbTrigger(prev => prev + 1);
     });

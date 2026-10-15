@@ -1,9 +1,9 @@
 /**
  * LYNTRIX HYBRID CLOUD DATABASE & PERSISTENCE ENGINE
- * Powered by Supabase (PostgreSQL Cloud DB) with local client-side persistence & auto-sync.
+ * Powered by Firebase Cloud Firestore with local client-side persistence & auto-sync.
  */
 
-import { supabase, isSupabaseConfigured } from './supabase';
+import { cloud, isFirebaseConfigured } from './firebase';
 
 const STORAGE_KEYS = {
   SERVICES: 'lyntrix_cloud_services',
@@ -200,7 +200,7 @@ const DEFAULT_USERS = [
   }
 ];
 
-// Sanitizers for Cloud DB Postgres Tables
+// Sanitizers for Cloud Firestore collections
 const sanitizeUserForCloud = (u) => ({
   id: u.id,
   name: u.name || 'Valued Client',
@@ -292,18 +292,17 @@ function mergeDatasets(baseList, priorityList, primaryKey = 'id', fallbackKey = 
 }
 
 export const db = {
-  isCloudConnected: () => isSupabaseConfigured,
+  isCloudConnected: () => isFirebaseConfigured,
 
-  // --- Real-Time Background Synchronization with Supabase Cloud DB ---
+  // --- Real-Time Background Synchronization with Cloud Firestore ---
   syncWithCloud: async () => {
-    if (!isSupabaseConfigured || !supabase) return;
+    if (!isFirebaseConfigured) return;
     try {
       // 1. Non-destructive Sync for Inquiries
       const localInquiries = db.getInquiries();
       let cloudInquiries = null;
       try {
-        const { data } = await supabase.from('inquiries').select('*');
-        if (data && Array.isArray(data)) cloudInquiries = data;
+        cloudInquiries = await cloud.list('inquiries');
       } catch (e) {}
 
       if (cloudInquiries && cloudInquiries.length > 0) {
@@ -315,7 +314,7 @@ export const db = {
         const localOnlyInquiries = fullyMerged.filter(l => l && l.id && !cloudIds.has(l.id));
         if (localOnlyInquiries.length > 0) {
           const sanitized = localOnlyInquiries.map(sanitizeInquiryForCloud);
-          await supabase.from('inquiries').upsert(sanitized, { onConflict: 'id' });
+          await cloud.upsert('inquiries', sanitized);
         }
       }
 
@@ -323,8 +322,7 @@ export const db = {
       const localUsers = db.getUsers();
       let cloudUsers = null;
       try {
-        const { data } = await supabase.from('users').select('*');
-        if (data && Array.isArray(data)) cloudUsers = data;
+        cloudUsers = await cloud.list('users');
       } catch (e) {}
 
       const fetchedCloudUsers = cloudUsers || [];
@@ -332,12 +330,12 @@ export const db = {
       const fullyMergedUsers = mergeDatasets(baseMergedUsers, localUsers, 'id', 'email');
       localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(fullyMergedUsers));
 
-      if (isSupabaseConfigured && supabase && fullyMergedUsers.length > 0) {
+      if (fullyMergedUsers.length > 0) {
         const cloudEmails = new Set(fetchedCloudUsers.map(u => u.email?.toLowerCase()));
         const localOnlyUsers = fullyMergedUsers.filter(u => u && u.email && !cloudEmails.has(u.email.toLowerCase()));
         if (localOnlyUsers.length > 0) {
           const sanitized = localOnlyUsers.map(sanitizeUserForCloud);
-          await supabase.from('users').upsert(sanitized, { onConflict: 'email' });
+          await cloud.upsert('users', sanitized);
         }
       }
 
@@ -345,8 +343,7 @@ export const db = {
       const localAdmins = db.getAdmins();
       let cloudAdmins = null;
       try {
-        const { data } = await supabase.from('admins').select('*');
-        if (data && Array.isArray(data)) cloudAdmins = data;
+        cloudAdmins = await cloud.list('admins');
       } catch (e) {}
 
       if (cloudAdmins && cloudAdmins.length > 0) {
@@ -358,7 +355,7 @@ export const db = {
         const localOnlyAdmins = fullyMerged.filter(a => a && a.email && !cloudAdminEmails.has(a.email.toLowerCase()));
         if (localOnlyAdmins.length > 0) {
           const sanitized = localOnlyAdmins.map(sanitizeAdminForCloud);
-          await supabase.from('admins').upsert(sanitized, { onConflict: 'email' });
+          await cloud.upsert('admins', sanitized);
         }
       }
 
@@ -366,14 +363,13 @@ export const db = {
       const localServices = db.getServices();
       let cloudServices = null;
       try {
-        const { data } = await supabase.from('services').select('*');
-        if (data && Array.isArray(data)) cloudServices = data;
+        cloudServices = await cloud.list('services');
       } catch (e) {}
 
       if (cloudServices && cloudServices.length > 0) {
         const normalizedCloud = cloudServices.map(s => ({
           ...s,
-          basePrice: Number(s.basePrice !== undefined ? s.basePrice : (s.baseprice !== undefined ? s.baseprice : s.base_price)) || 0
+          basePrice: Number(s.basePrice) || 0
         }));
         const baseMerged = mergeDatasets(DEFAULT_SERVICES, localServices, 'id');
         const fullyMerged = mergeDatasets(baseMerged, normalizedCloud, 'id');
@@ -386,8 +382,7 @@ export const db = {
       const localAddons = db.getAddons();
       let cloudAddons = null;
       try {
-        const { data } = await supabase.from('addons').select('*');
-        if (data && Array.isArray(data)) cloudAddons = data;
+        cloudAddons = await cloud.list('addons');
       } catch (e) {}
 
       if (cloudAddons && cloudAddons.length > 0) {
@@ -404,7 +399,7 @@ export const db = {
 
       notifyDbUpdate();
     } catch (e) {
-      console.warn('[SUPABASE SYNC NOTE]:', e.message);
+      console.warn('[FIRESTORE SYNC NOTE]:', e.message);
     }
   },
 
@@ -430,8 +425,8 @@ export const db = {
     try {
       localStorage.setItem(STORAGE_KEYS.SERVICES, JSON.stringify(services));
       notifyDbUpdate();
-      if (isSupabaseConfigured && supabase) {
-        const fullPayload = services.map(s => ({
+      if (isFirebaseConfigured) {
+        const payload = services.map(s => ({
           id: s.id,
           title: s.title,
           description: s.description || '',
@@ -441,23 +436,10 @@ export const db = {
           architect: s.architect || '',
           sla: s.sla || ''
         }));
-        
-        const { error } = await supabase.from('services').upsert(fullPayload, { onConflict: 'id' });
-        if (error) {
-          // If extra columns like 'architect' don't exist in Supabase schema yet, fallback to core price payload
-          console.warn('[SUPABASE SERVICES FULL UPSERT WARN, FALLING BACK TO CORE PRICES]:', error.message);
-          const corePayload = services.map(s => ({
-            id: s.id,
-            title: s.title,
-            description: s.description || '',
-            basePrice: Number(s.basePrice) || 0
-          }));
-          const { error: fallbackError } = await supabase.from('services').upsert(corePayload, { onConflict: 'id' });
-          if (fallbackError) console.error('[SUPABASE SERVICES CORE UPSERT ERROR]:', fallbackError.message);
-        }
+                await cloud.upsert('services', payload);
       }
     } catch (e) {
-      console.warn('[SUPABASE SERVICES UPSERT NOTE]:', e.message);
+      console.warn('[FIRESTORE SERVICES UPSERT NOTE]:', e.message);
     }
   },
 
@@ -495,17 +477,17 @@ export const db = {
     try {
       localStorage.setItem(STORAGE_KEYS.ADDONS, JSON.stringify(addons));
       notifyDbUpdate();
-      if (isSupabaseConfigured && supabase) {
+      if (isFirebaseConfigured) {
         const payload = addons.map(a => ({
           id: a.id,
           title: a.title,
           price: Number(a.price) || 0,
           popular: Boolean(a.popular)
         }));
-        await supabase.from('addons').upsert(payload);
+        await cloud.upsert('addons', payload);
       }
     } catch (e) {
-      console.warn('[SUPABASE ADDONS UPSERT NOTE]:', e.message);
+      console.warn('[FIRESTORE ADDONS UPSERT NOTE]:', e.message);
     }
   },
 
@@ -531,13 +513,11 @@ export const db = {
     try {
       localStorage.setItem(STORAGE_KEYS.INQUIRIES, JSON.stringify(inquiries));
       notifyDbUpdate();
-      if (isSupabaseConfigured && supabase) {
-        const sanitized = inquiries.map(sanitizeInquiryForCloud);
-        const { error } = await supabase.from('inquiries').upsert(sanitized, { onConflict: 'id' });
-        if (error) console.error('[SUPABASE INQUIRIES UPSERT ERROR]:', error);
+      if (isFirebaseConfigured) {
+        await cloud.upsert('inquiries', inquiries.map(sanitizeInquiryForCloud));
       }
     } catch (e) {
-      console.warn('[SUPABASE INQUIRIES UPSERT NOTE]:', e.message);
+      console.warn('[FIRESTORE INQUIRIES UPSERT NOTE]:', e.message);
     }
   },
 
@@ -548,12 +528,11 @@ export const db = {
     localStorage.setItem(STORAGE_KEYS.INQUIRIES, JSON.stringify(updated));
     notifyDbUpdate();
 
-    if (isSupabaseConfigured && supabase) {
+    if (isFirebaseConfigured) {
       try {
-        const { error } = await supabase.from('inquiries').upsert(sanitizeInquiryForCloud(newInquiry), { onConflict: 'id' });
-        if (error) console.error('[SUPABASE ADD INQUIRY ERROR]:', error);
+        await cloud.upsert('inquiries', sanitizeInquiryForCloud(newInquiry));
       } catch (err) {
-        console.warn('[SUPABASE INQUIRY INSERT EXCEPTION]:', err.message);
+        console.error('[FIRESTORE ADD INQUIRY ERROR]:', err.message);
       }
     }
     return updated;
@@ -570,10 +549,13 @@ export const db = {
     localStorage.setItem(STORAGE_KEYS.INQUIRIES, JSON.stringify(updated));
     notifyDbUpdate();
 
-    if (isSupabaseConfigured && supabase) {
+    const changed = updated.find(item => item.id === inquiryId);
+    if (isFirebaseConfigured && changed) {
       try {
-        await supabase.from('inquiries').update({ status: newStatus }).eq('id', inquiryId);
-      } catch (e) {}
+        await cloud.upsert('inquiries', sanitizeInquiryForCloud(changed));
+      } catch (e) {
+        console.warn('[FIRESTORE INQUIRY STATUS NOTE]:', e.message);
+      }
     }
     return updated;
   },
@@ -584,10 +566,12 @@ export const db = {
     localStorage.setItem(STORAGE_KEYS.INQUIRIES, JSON.stringify(updated));
     notifyDbUpdate();
 
-    if (isSupabaseConfigured && supabase) {
+    if (isFirebaseConfigured) {
       try {
-        await supabase.from('inquiries').delete().eq('id', inquiryId);
-      } catch (e) {}
+        await cloud.remove('inquiries', inquiryId);
+      } catch (e) {
+        console.warn('[FIRESTORE INQUIRY DELETE NOTE]:', e.message);
+      }
     }
     return updated;
   },
@@ -614,13 +598,11 @@ export const db = {
     try {
       localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
       notifyDbUpdate();
-      if (isSupabaseConfigured && supabase) {
-        const sanitized = users.map(sanitizeUserForCloud);
-        const { error } = await supabase.from('users').upsert(sanitized, { onConflict: 'email' });
-        if (error) console.error('[SUPABASE USERS UPSERT ERROR]:', error);
+      if (isFirebaseConfigured) {
+        await cloud.upsert('users', users.map(sanitizeUserForCloud));
       }
     } catch (e) {
-      console.warn('[SUPABASE USERS UPSERT NOTE]:', e.message);
+      console.warn('[FIRESTORE USERS UPSERT NOTE]:', e.message);
     }
   },
 
@@ -654,12 +636,11 @@ export const db = {
     notifyDbUpdate();
     db.setCurrentUser(newUser);
 
-    if (isSupabaseConfigured && supabase) {
+    if (isFirebaseConfigured) {
       try {
-        const { error } = await supabase.from('users').upsert(sanitizeUserForCloud(newUser), { onConflict: 'email' });
-        if (error) console.error('[SUPABASE REGISTER USER ERROR]:', error);
+        await cloud.upsert('users', sanitizeUserForCloud(newUser));
       } catch (err) {
-        console.warn('[SUPABASE INSERT EXCEPTION]:', err.message);
+        console.error('[FIRESTORE REGISTER USER ERROR]:', err.message);
       }
     }
 
@@ -721,12 +702,6 @@ export const db = {
     if (adminIndex !== -1) {
       admins[adminIndex].password = newPassword;
       await db.saveAdmins(admins);
-
-      if (isSupabaseConfigured && supabase) {
-        try {
-          await supabase.from('admins').update({ password: newPassword }).eq('email', cleanEmail);
-        } catch (e) {}
-      }
       return { success: true, type: 'admin', user: admins[adminIndex] };
     }
 
@@ -736,12 +711,6 @@ export const db = {
     if (userIndex !== -1) {
       users[userIndex].password = newPassword;
       await db.saveUsers(users);
-
-      if (isSupabaseConfigured && supabase) {
-        try {
-          await supabase.from('users').update({ password: newPassword }).eq('email', cleanEmail);
-        } catch (e) {}
-      }
       return { success: true, type: 'client', user: users[userIndex] };
     }
 
@@ -759,12 +728,6 @@ export const db = {
     };
     await db.saveUsers([newUser, ...users]);
 
-    if (isSupabaseConfigured && supabase) {
-      try {
-        await supabase.from('users').upsert(sanitizeUserForCloud(newUser), { onConflict: 'email' });
-      } catch (e) {}
-    }
-
     return { success: true, type: 'client', user: newUser };
   },
 
@@ -780,10 +743,12 @@ export const db = {
     }
     db.setCurrentUser(finalUser);
 
-    if (isSupabaseConfigured && supabase) {
+    if (isFirebaseConfigured) {
       try {
-        await supabase.from('users').upsert(sanitizeUserForCloud(finalUser), { onConflict: 'email' });
-      } catch (e) {}
+        await cloud.upsert('users', sanitizeUserForCloud(finalUser));
+      } catch (e) {
+        console.warn('[FIRESTORE PROFILE NOTE]:', e.message);
+      }
     }
 
     return finalUser;
@@ -795,12 +760,6 @@ export const db = {
     if (index !== -1) {
       users[index] = { ...users[index], ...updatedData };
       await db.saveUsers(users);
-
-      if (isSupabaseConfigured && supabase) {
-        try {
-          await supabase.from('users').upsert(sanitizeUserForCloud(users[index]), { onConflict: 'id' });
-        } catch (e) {}
-      }
       return users[index];
     }
     return null;
@@ -812,10 +771,12 @@ export const db = {
     localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(updated));
     notifyDbUpdate();
 
-    if (isSupabaseConfigured && supabase) {
+    if (isFirebaseConfigured) {
       try {
-        await supabase.from('users').delete().eq('id', userId);
-      } catch (e) {}
+        await cloud.remove('users', userId);
+      } catch (e) {
+        console.warn('[FIRESTORE USER DELETE NOTE]:', e.message);
+      }
     }
     return updated;
   },
@@ -826,12 +787,6 @@ export const db = {
     if (index !== -1) {
       users[index].password = newPassword;
       await db.saveUsers(users);
-
-      if (isSupabaseConfigured && supabase) {
-        try {
-          await supabase.from('users').update({ password: newPassword }).eq('id', userId);
-        } catch (e) {}
-      }
       return users[index];
     }
     return null;
@@ -893,13 +848,12 @@ export const db = {
 
     db.setCurrentUser(found);
 
-    // ALWAYS sync and upsert to Supabase Cloud DB on every Google Auth login
-    if (isSupabaseConfigured && supabase) {
+    // ALWAYS sync and upsert to Cloud Firestore on every Google Auth login
+    if (isFirebaseConfigured) {
       try {
-        const { error } = await supabase.from('users').upsert(sanitizeUserForCloud(found), { onConflict: 'email' });
-        if (error) console.error('[SUPABASE GOOGLE USER UPSERT ERROR]:', error);
+        await cloud.upsert('users', sanitizeUserForCloud(found));
       } catch (err) {
-        console.warn('[SUPABASE GOOGLE USER EXCEPTION]:', err.message);
+        console.error('[FIRESTORE GOOGLE USER UPSERT ERROR]:', err.message);
       }
     }
 
@@ -949,11 +903,12 @@ export const db = {
     try {
       localStorage.setItem(STORAGE_KEYS.ADMINS, JSON.stringify(admins));
       notifyDbUpdate();
-      if (isSupabaseConfigured && supabase) {
-        const sanitized = admins.map(sanitizeAdminForCloud);
-        await supabase.from('admins').upsert(sanitized, { onConflict: 'email' });
+      if (isFirebaseConfigured) {
+        await cloud.upsert('admins', admins.map(sanitizeAdminForCloud));
       }
-    } catch (e) {}
+    } catch (e) {
+      console.warn('[FIRESTORE ADMINS UPSERT NOTE]:', e.message);
+    }
   },
 
   validateAdminCredentials: (email, password) => {
@@ -994,10 +949,12 @@ export const db = {
     localStorage.setItem(STORAGE_KEYS.ADMINS, JSON.stringify(updated));
     notifyDbUpdate();
 
-    if (isSupabaseConfigured && supabase) {
+    if (isFirebaseConfigured) {
       try {
-        await supabase.from('admins').upsert(sanitizeAdminForCloud(newAdmin), { onConflict: 'email' });
-      } catch (e) {}
+        await cloud.upsert('admins', sanitizeAdminForCloud(newAdmin));
+      } catch (e) {
+        console.warn('[FIRESTORE ADD ADMIN NOTE]:', e.message);
+      }
     }
     return updated;
   },
@@ -1010,13 +967,7 @@ export const db = {
       }
       return a;
     });
-    db.saveAdmins(updated);
-
-    if (isSupabaseConfigured && supabase) {
-      try {
-        await supabase.from('admins').update({ password: newPassword }).eq('id', adminId);
-      } catch (e) {}
-    }
+    await db.saveAdmins(updated);
     return updated;
   },
 
@@ -1026,12 +977,14 @@ export const db = {
       throw new Error('Cannot delete the primary root administrator account.');
     }
     const updated = admins.filter(a => a.id !== adminId);
-    db.saveAdmins(updated);
+    await db.saveAdmins(updated);
 
-    if (isSupabaseConfigured && supabase) {
+    if (isFirebaseConfigured) {
       try {
-        await supabase.from('admins').delete().eq('id', adminId);
-      } catch (e) {}
+        await cloud.remove('admins', adminId);
+      } catch (e) {
+        console.warn('[FIRESTORE ADMIN DELETE NOTE]:', e.message);
+      }
     }
     return updated;
   },

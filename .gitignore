@@ -23,3 +23,7 @@ dist-ssr
 # OS files
 .DS_Store
 Thumbs.db
+
+# Firebase emulator logs
+*-debug.log
+.firebase

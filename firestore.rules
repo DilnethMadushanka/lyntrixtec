@@ -1,0 +1,25 @@
+rules_version = '2';
+
+// Lyntrix Cloud Firestore rules.
+//
+// The site authenticates users itself (records in `users` / `admins`) rather than through
+// Firebase Auth, so the browser needs open access to these five collections, the same access the
+// old Supabase "public read/write" policies granted. Every other path is denied.
+//
+// WARNING: this means anyone holding the public web config can read and write these collections,
+// including stored passwords. Moving sign-in to Firebase Auth is the fix; see README.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function idMatches(docId) {
+      return request.resource.data.id == docId;
+    }
+
+    match /services/{docId}  { allow read; allow write: if idMatches(docId); allow delete; }
+    match /addons/{docId}    { allow read; allow write: if idMatches(docId); allow delete; }
+    match /inquiries/{docId} { allow read; allow write: if idMatches(docId); allow delete; }
+    match /users/{docId}     { allow read; allow write: if idMatches(docId); allow delete; }
+    match /admins/{docId}    { allow read; allow write: if idMatches(docId); allow delete; }
+
+    match /{document=**} { allow read, write: if false; }
+  }
+}

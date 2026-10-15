@@ -48,7 +48,7 @@ export default function AdminDashboard({ onLogout, onReturnToSite, onDataUpdated
     setInquiries(db.getInquiries());
     setAdmins(db.getAdmins());
     setIsSyncingCloud(false);
-    setSaveNotice('Supabase Cloud Database synced successfully! All accounts and proposals updated.');
+    setSaveNotice('Firebase Firestore synced successfully! All accounts and proposals updated.');
     setTimeout(() => setSaveNotice(''), 4000);
   };
 
@@ -100,7 +100,7 @@ export default function AdminDashboard({ onLogout, onReturnToSite, onDataUpdated
   const [isPinging, setIsPinging] = useState(false);
   const [uptimeLogs, setUptimeLogs] = useState([
     { id: 1, time: new Date().toLocaleTimeString(), level: 'HEALTHY', msg: '[SENTINEL] Web App Frontend (14ms) • SSL TLS 1.3 Active' },
-    { id: 2, time: new Date(Date.now() - 60000).toLocaleTimeString(), level: 'HEALTHY', msg: '[CLOUD DB] Supabase PostgreSQL connection verified (28ms)' },
+    { id: 2, time: new Date(Date.now() - 60000).toLocaleTimeString(), level: 'HEALTHY', msg: '[CLOUD DB] Firebase Firestore connection verified (28ms)' },
     { id: 3, time: new Date(Date.now() - 120000).toLocaleTimeString(), level: 'HEALTHY', msg: '[SMTP RELAY] Nodemailer Gmail API ready for dispatches' },
     { id: 4, time: new Date(Date.now() - 180000).toLocaleTimeString(), level: 'HEALTHY', msg: '[REST API] Latency target < 50ms met (18ms average)' }
   ]);
@@ -118,7 +118,7 @@ export default function AdminDashboard({ onLogout, onReturnToSite, onDataUpdated
       setLastPingTime(nowTime);
 
       setUptimeLogs(prev => [
-        { id: Date.now(), time: nowTime, level: 'HEALTHY', msg: `[MANUAL PING] All systems operational. Web (${newPing}ms) • PostgreSQL (${newDb}ms) • REST API (${newApi}ms)` },
+        { id: Date.now(), time: nowTime, level: 'HEALTHY', msg: `[MANUAL PING] All systems operational. Web (${newPing}ms) • Firestore (${newDb}ms) • REST API (${newApi}ms)` },
         ...prev
       ]);
       setIsPinging(false);
@@ -144,7 +144,7 @@ export default function AdminDashboard({ onLogout, onReturnToSite, onDataUpdated
     { id: 1, time: new Date().toLocaleTimeString(), level: 'INFO', msg: '[AWS EKS] Pod cluster auto-scaled to 14 nodes. CPU load 34%.' },
     { id: 2, time: '20:51:04', level: 'SUCCESS', msg: '[Cloud DB] Authenticated admin session for user admin@lyntrixtec.com.' },
     { id: 3, time: '20:48:33', level: 'WARN', msg: '[Cloudflare WAF] Blocked 142 suspicious DDOS requests from origin IP 194.26.x.x.' },
-    { id: 4, time: '20:45:00', level: 'INFO', msg: '[PostgreSQL] Automated WAL backup snapshot stored in S3 Encrypted Vault.' },
+    { id: 4, time: '20:45:00', level: 'INFO', msg: '[Firestore] Managed multi-region replication healthy.' },
   ]);
 
   // Handle Price Change for Services
@@ -570,7 +570,7 @@ export default function AdminDashboard({ onLogout, onReturnToSite, onDataUpdated
       <div className="p-3 border-t border-[var(--line)] space-y-2 shrink-0 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
         <div className="flex items-center gap-2 px-3 py-2 text-xs text-[var(--muted)]">
           <span className={`w-1.5 h-1.5 rounded-full ${cloudOnline ? 'bg-emerald-400' : 'bg-amber-400'}`} />
-          {cloudOnline ? 'Supabase connected' : 'Local only · missing env keys'}
+          {cloudOnline ? 'Firebase connected' : 'Local only · missing env keys'}
         </div>
         <button onClick={handleManualCloudSync} disabled={isSyncingCloud} className="btn btn-ghost btn-sm w-full">
           <RefreshCcw className={`w-4 h-4 ${isSyncingCloud ? 'animate-spin' : ''}`} />
@@ -644,7 +644,7 @@ export default function AdminDashboard({ onLogout, onReturnToSite, onDataUpdated
             <StatCard
               label="Cloud database"
               value={cloudOnline ? 'Online' : 'Local'}
-              hint={cloudOnline ? 'Supabase connected' : 'Missing env keys'}
+              hint={cloudOnline ? 'Firebase connected' : 'Missing env keys'}
               icon={Database}
               tone={cloudOnline ? 'ok' : 'warn'}
             />
@@ -963,7 +963,7 @@ export default function AdminDashboard({ onLogout, onReturnToSite, onDataUpdated
                     Live monitor
                   </div>
                   <h2 className="h3">All systems operational</h2>
-                  <p className="text-sm text-[var(--muted)]">Web frontend, PostgreSQL, SMTP relay and API. Last check {lastPingTime}.</p>
+                  <p className="text-sm text-[var(--muted)]">Web frontend, Firestore, SMTP relay and API. Last check {lastPingTime}.</p>
                 </div>
                 <button onClick={handleManualHealthPing} disabled={isPinging} className="btn btn-primary shrink-0">
                   <RefreshCcw className={`w-4 h-4 ${isPinging ? 'animate-spin' : ''}`} />
@@ -1043,7 +1043,7 @@ export default function AdminDashboard({ onLogout, onReturnToSite, onDataUpdated
               <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
                 {[
                   { icon: Globe, name: 'Web frontend', sub: 'React enterprise UI', status: 'Online', rows: [['Latency', `${pingLatency} ms`], ['TLS', '1.3 active'], ['Target SLA', '99.99%']] },
-                  { icon: Database, name: 'PostgreSQL', sub: 'Supabase managed', status: 'Online', rows: [['Query latency', `${dbLatency} ms`], ['Engine', 'PostgreSQL 15'], ['Sync', 'Connected']] },
+                  { icon: Database, name: 'Firestore', sub: 'Firebase managed', status: 'Online', rows: [['Query latency', `${dbLatency} ms`], ['Engine', 'Cloud Firestore'], ['Sync', 'Connected']] },
                   { icon: Mail, name: 'SMTP relay', sub: 'Nodemailer engine', status: 'Ready', rows: [['Dispatch', 'lyntrixtec@gmail.com'], ['Encryption', 'STARTTLS / SSL'], ['Delivery', '< 2s']] },
                   { icon: Server, name: 'REST API', sub: 'Vercel serverless', status: 'Healthy', rows: [['Response', `${apiLatency} ms`], ['Region', 'Asia / Global'], ['Incident SLA', '< 15 min']] },
                 ].map(({ icon: Icon, name, sub, status, rows }) => (
