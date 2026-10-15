@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Check, Send } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { db } from '../services/db';
@@ -40,7 +40,7 @@ function Option({ selected, onClick, children, className = '', multi = false }) 
       role={multi ? 'checkbox' : 'radio'}
       aria-checked={selected}
       onClick={onClick}
-      className={`surface-interactive w-full text-left p-3.5 rounded-xl border flex items-center justify-between gap-3 min-h-[3rem] ${
+      className={`surface-interactive w-full text-left px-3.5 py-3 sm:p-3.5 rounded-xl border flex items-center justify-between gap-3 min-h-[3rem] ${
         selected ? 'border-[var(--accent)]/70 bg-[var(--accent-soft)] text-white' : 'border-[var(--line)] bg-white/[0.02] text-[var(--text-2)]'
       } ${className}`}
     >
@@ -63,6 +63,24 @@ export default function InteractiveCostCalculator({ onSelectEstimate, dbTrigger 
   const [supportTier, setSupportTier] = useState('premium');
   const [selectedAddons, setSelectedAddons] = useState(['compliance', 'cicd']);
   const [submitted, setSubmitted] = useState(false);
+  const formRef = useRef(null);
+  const summaryRef = useRef(null);
+  const [formVisible, setFormVisible] = useState(false);
+  const [summaryVisible, setSummaryVisible] = useState(false);
+
+  // Mobile price bar: shown while the options are on screen but the summary card is not
+  useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') return undefined;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.target === formRef.current) setFormVisible(e.isIntersecting);
+        if (e.target === summaryRef.current) setSummaryVisible(e.isIntersecting);
+      });
+    }, { threshold: 0 });
+    if (formRef.current) io.observe(formRef.current);
+    if (summaryRef.current) io.observe(summaryRef.current);
+    return () => io.disconnect();
+  }, []);
 
   // Dynamic DB prices
   const [dbServices, setDbServices] = useState(db.getServices());
@@ -132,7 +150,7 @@ export default function InteractiveCostCalculator({ onSelectEstimate, dbTrigger 
         </SectionHeader>
 
         <div className="grid lg:grid-cols-12 gap-6 items-start">
-          <div className="lg:col-span-8 surface edge-light p-5 sm:p-8 space-y-9">
+          <div ref={formRef} className="lg:col-span-8 surface edge-light p-4 sm:p-8 space-y-8 sm:space-y-9">
             <Step n="1" title="Primary service area">
               <div role="radiogroup" className="grid sm:grid-cols-2 gap-2.5">
                 {serviceOptions.map((s) => (
@@ -190,7 +208,7 @@ export default function InteractiveCostCalculator({ onSelectEstimate, dbTrigger 
           </div>
 
           {/* Summary */}
-          <aside className="lg:col-span-4 lg:sticky lg:top-24">
+          <aside ref={summaryRef} className="lg:col-span-4 lg:sticky lg:top-24">
             <div className="surface ring-grad overflow-hidden p-5 sm:p-7 relative">
               <span className="absolute -top-24 -right-24 w-56 h-56 rounded-full bg-[#818cf8]/20 blur-3xl pointer-events-none" aria-hidden="true" />
               <div className="label relative">Estimated investment</div>
@@ -236,6 +254,30 @@ export default function InteractiveCostCalculator({ onSelectEstimate, dbTrigger 
               </p>
             </div>
           </aside>
+        </div>
+      </div>
+
+      {/* Mobile price bar */}
+      <div
+        className={`lg:hidden fixed inset-x-3 z-40 bottom-[max(0.75rem,env(safe-area-inset-bottom))] transition-all duration-500 ease-[var(--ease)] ${
+          formVisible && !summaryVisible ? 'translate-y-0 opacity-100' : 'translate-y-[150%] opacity-0 pointer-events-none'
+        }`}
+        aria-hidden={!(formVisible && !summaryVisible)}
+      >
+        <div className="flex items-center justify-between gap-3 rounded-full border border-white/10 bg-[#0e0e13]/90 backdrop-blur-xl pl-5 pr-1.5 py-1.5 shadow-[0_16px_50px_-10px_rgba(0,0,0,0.9)]">
+          <div className="min-w-0">
+            <div className="label !text-[10px]">Estimate</div>
+            <div className="text-white font-medium tabular-nums tracking-[-0.02em] truncate">
+              ${min.toLocaleString()} – ${max.toLocaleString()}
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => summaryRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
+            className="btn btn-primary btn-sm shrink-0"
+          >
+            Review
+          </button>
         </div>
       </div>
     </section>

@@ -83,7 +83,7 @@ export default function ProjectTrackerModal({ isOpen, onClose }) {
 
         {/* Search Input */}
         <form onSubmit={handleSearch} className="space-y-3 mb-6">
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <div className="relative flex-1">
               <Terminal className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
               <input

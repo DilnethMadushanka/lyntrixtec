@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import SectionHeader from './SectionHeader';
+import SnapDots from './SnapDots';
 
 const REVIEWS = [
   {
@@ -26,6 +27,7 @@ const REVIEWS = [
 ];
 
 export default function TestimonialsSection() {
+  const scroller = useRef(null);
   return (
     <section className="section section-tint">
       <div className="container-x">
@@ -33,11 +35,11 @@ export default function TestimonialsSection() {
           How we help technology teams ship faster and operate securely.
         </SectionHeader>
 
-        <div className="grid md:grid-cols-3 gap-3 sm:gap-4 md:pt-6">
+        <div ref={scroller} className="m-carousel grid md:grid-cols-3 gap-3 sm:gap-4 md:pt-6">
           {REVIEWS.map((r, i) => (
             <figure
               key={r.name}
-              className={`surface edge-light p-6 sm:p-8 flex flex-col ${i === 1 ? 'md:-translate-y-6 ring-grad' : ''}`}
+              className={`surface edge-light p-5 sm:p-8 flex flex-col ${i === 1 ? 'md:-translate-y-6 ring-grad' : ''}`}
             >
               <div className="flex items-center justify-between">
                 <span className="serif text-5xl leading-none h-9 -mb-3" aria-hidden="true">&ldquo;</span>
@@ -56,6 +58,7 @@ export default function TestimonialsSection() {
             </figure>
           ))}
         </div>
+        <SnapDots scrollerRef={scroller} count={REVIEWS.length} />
       </div>
     </section>
   );

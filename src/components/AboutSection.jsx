@@ -29,8 +29,8 @@ export default function AboutSection() {
           <span className="serif">effortless experiences.</span>
         </p>
 
-        <div className="mt-14 sm:mt-20 grid lg:grid-cols-12 gap-4 items-stretch">
-          <div className="lg:col-span-4 surface edge-light overflow-hidden relative min-h-[18rem]">
+        <div className="mt-10 sm:mt-20 grid lg:grid-cols-12 gap-3 sm:gap-4 items-stretch">
+          <div className="lg:col-span-4 surface edge-light overflow-hidden relative min-h-[15rem] sm:min-h-[18rem]">
             <img
               src="/logo.jpg"
               alt="Lyntrix Technologies emblem"
@@ -43,19 +43,19 @@ export default function AboutSection() {
             </div>
           </div>
 
-          <div className="lg:col-span-8 grid sm:grid-cols-3 gap-4">
+          <div className="lg:col-span-8 grid sm:grid-cols-3 gap-3 sm:gap-4">
             {PILLARS.map(({ icon: Icon, title, text }, i) => (
-              <div key={title} className="surface surface-interactive edge-light p-6 flex flex-col">
+              <div key={title} className="surface surface-interactive edge-light p-5 sm:p-6 flex flex-col">
                 <div className="flex items-center justify-between">
                   <Icon className="w-5 h-5 text-[var(--accent)]" />
                   <span className="label">0{i + 1}</span>
                 </div>
-                <div className="mt-auto pt-10 text-2xl font-medium tracking-[-0.04em] text-white">{title}</div>
+                <div className="mt-auto pt-5 sm:pt-10 text-2xl font-medium tracking-[-0.04em] text-white">{title}</div>
                 <p className="text-sm text-[var(--muted)] mt-2 leading-relaxed">{text}</p>
               </div>
             ))}
 
-            <ul className="sm:col-span-3 surface p-6 grid sm:grid-cols-3 gap-5">
+            <ul className="sm:col-span-3 surface p-5 sm:p-6 grid sm:grid-cols-3 gap-4 sm:gap-5">
               {PROMISES.map((p) => (
                 <li key={p} className="flex items-start gap-3 text-sm text-[var(--text-2)] leading-relaxed">
                   <Check className="w-4 h-4 mt-0.5 text-[var(--accent)] shrink-0" />

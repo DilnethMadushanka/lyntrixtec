@@ -850,3 +850,39 @@ select.field option { background: var(--surface-2); }
 @media (prefers-reduced-motion: reduce) {
   .intro-glow, .ambient-aurora, .serif.drift { animation: none; }
 }
+
+/* ------------------------------------------------------------------
+   Mobile: card grids become swipe carousels below 640px
+   ------------------------------------------------------------------ */
+
+@media (max-width: 639px) {
+  .m-carousel {
+    display: flex !important;
+    gap: 0.75rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    margin-inline: calc(clamp(1rem, 4vw, 2rem) * -1);
+    padding-inline: clamp(1rem, 4vw, 2rem);
+    scroll-padding-inline: clamp(1rem, 4vw, 2rem);
+    overscroll-behavior-x: contain;
+  }
+  .m-carousel::-webkit-scrollbar { display: none; }
+  .m-carousel > * {
+    flex: 0 0 86%;
+    min-width: 0;
+    scroll-snap-align: start;
+    transform: none !important;
+  }
+}
+
+.snap-dots { display: flex; justify-content: center; gap: 0.375rem; margin-top: 1.25rem; }
+.snap-dots button {
+  height: 0.375rem;
+  width: 0.375rem;
+  border-radius: 999px;
+  background: var(--line-strong);
+  transition: width 0.4s var(--ease), background-color 0.3s;
+}
+.snap-dots button[aria-current='true'] { width: 1.5rem; background: var(--accent); }
+@media (min-width: 640px) { .snap-dots { display: none; } }

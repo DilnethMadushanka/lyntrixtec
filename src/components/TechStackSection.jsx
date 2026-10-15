@@ -51,15 +51,15 @@ export default function TechStackSection() {
         </div>
 
         <div className="rounded-[var(--radius-lg)] border border-[var(--line)] overflow-hidden">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[var(--line)]">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-[var(--line)]">
             {list.map((tech) => (
-              <div key={tech.name} className="group bg-[var(--bg)] hover:bg-[var(--surface)] transition-colors duration-300 fade-up p-5 sm:p-6 min-h-[9.5rem] flex flex-col">
+              <div key={tech.name} className="group bg-[var(--bg)] hover:bg-[var(--surface)] transition-colors duration-300 fade-up p-4 sm:p-6 min-h-[7rem] sm:min-h-[9.5rem] flex flex-col min-w-0">
                 <div className="flex items-center justify-between gap-3">
-                  <span className="label">{tech.badge}</span>
+                  <span className="label truncate">{tech.badge}</span>
                   <span className="w-1.5 h-1.5 rounded-full bg-[var(--line-strong)] transition-colors group-hover:bg-[var(--accent)]" aria-hidden="true" />
                 </div>
-                <h3 className="mt-auto pt-6 font-medium text-white text-lg tracking-[-0.03em] leading-snug">{tech.name}</h3>
-                <p className="mt-1.5 text-sm text-[var(--muted)] leading-relaxed">{tech.desc}</p>
+                <h3 className="mt-auto pt-5 sm:pt-6 font-medium text-white text-[15px] sm:text-lg tracking-[-0.03em] leading-snug break-words">{tech.name}</h3>
+                <p className="hidden sm:block mt-1.5 text-sm text-[var(--muted)] leading-relaxed">{tech.desc}</p>
               </div>
             ))}
           </div>

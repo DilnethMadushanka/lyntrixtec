@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Code2, Cloud, Shield, Compass, Headphones, ArrowUpRight, Check } from 'lucide-react';
 import SectionHeader from './SectionHeader';
+import SnapDots from './SnapDots';
 
 const SERVICES = [
   {
@@ -83,13 +84,13 @@ const SLA = [
 ];
 
 // Bento layout: a wide hero card beside one tile, then a row of three
-const SPAN = ['sm:col-span-2 lg:col-span-4', 'lg:col-span-2', 'lg:col-span-2', 'lg:col-span-2', 'sm:col-span-2 lg:col-span-2'];
+const SPAN = ['sm:col-span-2 lg:col-span-4', 'lg:col-span-2', 'lg:col-span-2', 'lg:col-span-2', 'lg:col-span-2'];
 
 function ServiceCard({ service, index, featured }) {
   const Icon = service.icon;
   return (
     <article
-      className={`surface surface-interactive edge-light group relative overflow-hidden p-6 sm:p-8 flex flex-col ${SPAN[index]} ${
+      className={`surface surface-interactive edge-light group relative overflow-hidden p-5 sm:p-8 flex flex-col ${SPAN[index]} ${
         featured ? 'ring-grad' : ''
       }`}
     >
@@ -100,15 +101,15 @@ function ServiceCard({ service, index, featured }) {
         <span className="label">{String(index + 1).padStart(2, '0')} / {String(SERVICES.length).padStart(2, '0')}</span>
       </div>
 
-      <div className={featured ? 'mt-10 sm:mt-14' : 'mt-8'}>
+      <div className={featured ? 'mt-8 sm:mt-14' : 'mt-8'}>
         <span className="chip">{service.badge}</span>
-        <h3 className={`${featured ? 'h2 !text-[clamp(1.9rem,3.6vw,2.75rem)]' : 'h3'} mt-3`}>{service.title}</h3>
-        <p className={`mt-3 text-[var(--text-2)] leading-relaxed ${featured ? 'max-w-xl' : 'text-sm'}`}>{service.description}</p>
+        <h3 className={`${featured ? 'h3 sm:!text-[clamp(1.9rem,3.6vw,2.75rem)]' : 'h3'} mt-3`}>{service.title}</h3>
+        <p className={`mt-3 text-[var(--text-2)] leading-relaxed ${featured ? 'text-sm sm:text-base max-w-xl' : 'text-sm'}`}>{service.description}</p>
       </div>
 
       <ul className={`mt-6 grid gap-x-6 gap-y-2.5 ${featured ? 'sm:grid-cols-2' : ''}`}>
-        {(featured ? service.deliverables : service.deliverables.slice(0, 3)).map((item) => (
-          <li key={item} className="flex items-start gap-2.5 text-sm text-[var(--text)]">
+        {(featured ? service.deliverables : service.deliverables.slice(0, 3)).map((item, i) => (
+          <li key={item} className={`items-start gap-2.5 text-sm text-[var(--text)] ${i >= 3 ? 'hidden sm:flex' : 'flex'}`}>
             <Check className="w-4 h-4 mt-0.5 text-[var(--accent)] shrink-0" />
             <span>{item}</span>
           </li>
@@ -117,8 +118,8 @@ function ServiceCard({ service, index, featured }) {
 
       <div className="mt-auto pt-7 flex items-end justify-between gap-4">
         <div className="flex flex-wrap gap-1.5">
-          {(featured ? service.tech : service.tech.slice(0, 3)).map((t) => (
-            <span key={t} className="chip">{t}</span>
+          {(featured ? service.tech : service.tech.slice(0, 3)).map((t, i) => (
+            <span key={t} className={`chip ${i >= 3 ? 'max-sm:!hidden' : ''}`}>{t}</span>
           ))}
         </div>
         <a
@@ -131,7 +132,7 @@ function ServiceCard({ service, index, featured }) {
       </div>
 
       {featured && (
-        <dl className="mt-8 pt-6 border-t border-[var(--line)] grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <dl className="hidden sm:grid mt-8 pt-6 border-t border-[var(--line)] grid-cols-2 lg:grid-cols-4 gap-4">
           {SLA.map(([k, v]) => (
             <div key={k}>
               <dt className="label">{k}</dt>
@@ -145,6 +146,7 @@ function ServiceCard({ service, index, featured }) {
 }
 
 export default function ServicesSection() {
+  const scroller = useRef(null);
   return (
     <section id="services" className="section">
       <div className="container-x">
@@ -152,11 +154,12 @@ export default function ServicesSection() {
           End-to-end engineering across software, cloud, security and operations, built for reliability and steady growth.
         </SectionHeader>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 sm:gap-4">
+        <div ref={scroller} className="m-carousel grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 sm:gap-4">
           {SERVICES.map((s, i) => (
             <ServiceCard key={s.id} service={s} index={i} featured={i === 0} />
           ))}
         </div>
+        <SnapDots scrollerRef={scroller} count={SERVICES.length} />
       </div>
     </section>
   );

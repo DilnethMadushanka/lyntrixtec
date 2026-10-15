@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { ArrowRight, ArrowUpRight, Check, X } from 'lucide-react';
 import SectionHeader from './SectionHeader';
+import SnapDots from './SnapDots';
 
 const CASE_STUDIES = [
   {
@@ -146,6 +147,7 @@ function CaseModal({ study, onClose }) {
 
 export default function CaseStudiesSection() {
   const [selected, setSelected] = useState(null);
+  const scroller = useRef(null);
 
   return (
     <section id="case-studies" className="section">
@@ -154,7 +156,7 @@ export default function CaseStudiesSection() {
           How we help organizations overcome complex technical challenges and scale without drama.
         </SectionHeader>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+        <div ref={scroller} className="m-carousel grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
           {CASE_STUDIES.map((cs, i) => {
             const [headline, ...rest] = cs.impact;
             return (
@@ -202,6 +204,7 @@ export default function CaseStudiesSection() {
             );
           })}
         </div>
+        <SnapDots scrollerRef={scroller} count={CASE_STUDIES.length} />
       </div>
 
       {selected && <CaseModal study={selected} onClose={() => setSelected(null)} />}

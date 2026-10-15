@@ -60,8 +60,8 @@ export default function FAQSection() {
   return (
     <section id="faq" className="section">
       <div className="container-x">
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-          <div className="lg:col-span-4 lg:sticky lg:top-28">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+          <div className="lg:col-span-4 lg:sticky lg:top-28 min-w-0">
             <div className="eyebrow">
               <span className="idx">08</span>
               <span className="rule" aria-hidden="true" />
@@ -74,7 +74,7 @@ export default function FAQSection() {
             <a href="#contact" className="btn btn-ghost mt-7">Ask a question</a>
           </div>
 
-          <div className="lg:col-span-8">
+          <div className="lg:col-span-8 min-w-0">
             <div role="tablist" aria-label="FAQ categories" className="rail mb-6">
               {CATEGORIES.map((c) => (
                 <button
@@ -97,9 +97,9 @@ export default function FAQSection() {
                     <button
                       onClick={() => setOpenIndex(isOpen ? -1 : idx)}
                       aria-expanded={isOpen}
-                      className="group w-full py-6 text-left flex items-start justify-between gap-6"
+                      className="group w-full py-5 sm:py-6 text-left flex items-start justify-between gap-4 sm:gap-6"
                     >
-                      <span className="flex gap-5">
+                      <span className="flex gap-3 sm:gap-5 min-w-0">
                         <span className={`font-mono text-xs pt-1.5 ${isOpen ? 'text-[var(--accent)]' : 'text-[var(--muted)]'}`}>
                           {String(idx + 1).padStart(2, '0')}
                         </span>
@@ -117,7 +117,7 @@ export default function FAQSection() {
                     </button>
                     <div className={`grid transition-[grid-template-rows] duration-500 ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
                       <div className="overflow-hidden">
-                        <p className="pl-9 sm:pl-10 pr-4 sm:pr-12 pb-7 text-[var(--text-2)] leading-relaxed max-w-2xl">{faq.a}</p>
+                        <p className="pl-7 sm:pl-10 pr-2 sm:pr-12 pb-6 sm:pb-7 text-[var(--text-2)] leading-relaxed max-w-2xl">{faq.a}</p>
                       </div>
                     </div>
                   </div>
