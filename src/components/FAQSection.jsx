@@ -103,7 +103,7 @@ export default function FAQSection() {
                         <span className={`font-mono text-xs pt-1.5 ${isOpen ? 'text-[var(--accent)]' : 'text-[var(--muted)]'}`}>
                           {String(idx + 1).padStart(2, '0')}
                         </span>
-                        <span className={`text-lg sm:text-xl font-medium tracking-[-0.03em] leading-snug transition-colors ${isOpen ? 'text-white' : 'text-[var(--text-2)] group-hover:text-white'}`}>
+                        <span className={`text-lg sm:text-xl font-medium tracking-[-0.02em] leading-snug transition-colors ${isOpen ? 'text-white' : 'text-[var(--text-2)] group-hover:text-white'}`}>
                           {faq.q}
                         </span>
                       </span>

@@ -100,7 +100,7 @@ export default function SolutionsSection() {
                   </span>
                   <span className="flex-1 min-w-0">
                     <span
-                      className={`block text-lg sm:text-xl font-medium tracking-[-0.03em] leading-snug transition-colors ${
+                      className={`block text-lg sm:text-xl font-medium tracking-[-0.02em] leading-snug transition-colors ${
                         isActive ? 'text-white' : 'text-[var(--muted)] group-hover:text-[var(--text-2)]'
                       }`}
                     >

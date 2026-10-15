@@ -109,7 +109,7 @@ export default function Hero({ onOpenCalculator, onOpenTracker }) {
             {[0, 1].map((k) => (
               <div key={k} className="marquee-track">
                 {STACK.map((t) => (
-                  <span key={t} className="text-lg sm:text-xl font-medium tracking-[-0.03em] text-white/35 whitespace-nowrap">
+                  <span key={t} className="text-lg sm:text-xl font-medium tracking-[-0.02em] text-white/35 whitespace-nowrap">
                     {t}
                   </span>
                 ))}

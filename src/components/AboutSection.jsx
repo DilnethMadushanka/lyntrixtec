@@ -23,7 +23,7 @@ export default function AboutSection() {
           <span>About</span>
         </div>
 
-        <p className="mt-6 text-[clamp(1.75rem,4.4vw,3.4rem)] leading-[1.08] tracking-[-0.04em] font-medium text-white max-w-5xl">
+        <p className="mt-6 text-[clamp(1.75rem,4.4vw,3.4rem)] leading-[1.08] tracking-[-0.03em] font-medium text-white max-w-5xl">
           Lyntrix engineers robust, secure, future-proof software and infrastructure for organizations navigating
           digital transformation, <span className="text-[var(--muted)]">bridging complex engineering with</span>{' '}
           <span className="serif">effortless experiences.</span>
@@ -50,7 +50,7 @@ export default function AboutSection() {
                   <Icon className="w-5 h-5 text-[var(--accent)]" />
                   <span className="label">0{i + 1}</span>
                 </div>
-                <div className="mt-auto pt-5 sm:pt-10 text-2xl font-medium tracking-[-0.04em] text-white">{title}</div>
+                <div className="mt-auto pt-5 sm:pt-10 text-2xl font-medium tracking-[-0.03em] text-white">{title}</div>
                 <p className="text-sm text-[var(--muted)] mt-2 leading-relaxed">{text}</p>
               </div>
             ))}

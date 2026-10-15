@@ -58,7 +58,7 @@ export default function TechStackSection() {
                   <span className="label truncate">{tech.badge}</span>
                   <span className="w-1.5 h-1.5 rounded-full bg-[var(--line-strong)] transition-colors group-hover:bg-[var(--accent)]" aria-hidden="true" />
                 </div>
-                <h3 className="mt-auto pt-5 sm:pt-6 font-medium text-white text-[15px] sm:text-lg tracking-[-0.03em] leading-snug break-words">{tech.name}</h3>
+                <h3 className="mt-auto pt-5 sm:pt-6 font-medium text-white text-[15px] sm:text-lg tracking-[-0.02em] leading-snug break-words">{tech.name}</h3>
                 <p className="hidden sm:block mt-1.5 text-sm text-[var(--muted)] leading-relaxed">{tech.desc}</p>
               </div>
             ))}

@@ -77,8 +77,8 @@ export default function ProjectTrackerModal({ isOpen, onClose }) {
           <div className="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center mx-auto border border-cyan-500/30">
             <Search className="w-6 h-6" />
           </div>
-          <h3 className="text-2xl font-extrabold text-white font-sans">Project Status Tracker</h3>
-          <p className="text-xs text-slate-400 font-mono">ENTER YOUR UNIQUE PROPOSAL / TRACKING ID</p>
+          <h3 className="text-2xl font-semibold tracking-tight text-white font-sans">Project Status Tracker</h3>
+          <p className="text-sm text-slate-400">Enter your proposal tracking ID</p>
         </div>
 
         {/* Search Input */}
@@ -92,18 +92,18 @@ export default function ProjectTrackerModal({ isOpen, onClose }) {
                 placeholder="e.g. LYN-9021 or LYN-9020"
                 value={trackingId}
                 onChange={e => setTrackingId(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900 border border-slate-800 text-white text-xs font-mono focus:border-cyan-400 focus:outline-none"
+                className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900 border border-slate-800 text-white text-sm focus:border-cyan-400 focus:outline-none"
               />
             </div>
             <button
               type="submit"
-              className="glow-btn px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-indigo-500 text-slate-950 font-bold text-xs font-mono shrink-0"
+              className="glow-btn px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-indigo-500 text-slate-950 font-semibold text-sm shrink-0"
             >
               Lookup ID
             </button>
           </div>
 
-          <div className="text-[10px] text-slate-400 font-mono flex items-center justify-between">
+          <div className="text-[10px] text-slate-400 flex items-center justify-between">
             <span>🔒 Enter the unique tracking ID assigned to your technical proposal.</span>
           </div>
         </form>
@@ -118,11 +118,11 @@ export default function ProjectTrackerModal({ isOpen, onClose }) {
                 <div>
                   <span className="text-[10px] font-mono text-cyan-400">{searchResult.id}</span>
                   <div className="text-base font-bold text-white font-sans">{searchResult.name}</div>
-                  <div className="text-xs text-slate-400 font-mono">{searchResult.service}</div>
+                  <div className="text-xs text-slate-400">{searchResult.service}</div>
                 </div>
 
                 <div className="text-right">
-                  <span className={`px-2.5 py-1 rounded text-xs font-mono font-bold border ${
+                  <span className={`px-2.5 py-1 rounded text-sm font-semibold border ${
                     searchResult.status === 'New' ? 'bg-cyan-950 text-cyan-400 border-cyan-800' :
                     searchResult.status === 'In Review' ? 'bg-amber-950 text-amber-400 border-amber-800' :
                     searchResult.status === 'Proposal Sent' ? 'bg-indigo-950 text-indigo-400 border-indigo-800' :
@@ -130,17 +130,17 @@ export default function ProjectTrackerModal({ isOpen, onClose }) {
                   }`}>
                     STATUS: {searchResult.status.toUpperCase()}
                   </span>
-                  <div className="text-[10px] text-slate-500 font-mono mt-1">Est. Budget: {searchResult.budget}</div>
+                  <div className="text-[10px] text-slate-500 mt-1">Est. Budget: {searchResult.budget}</div>
                 </div>
               </div>
 
               {/* Progress Timeline */}
               <div className="space-y-3">
-                <div className="text-xs font-mono text-slate-400 uppercase">Live Engineering Timeline</div>
+                <div className="text-xs text-slate-400 uppercase">Live Engineering Timeline</div>
                 
                 <div className="space-y-3">
                   {getTimelineSteps(searchResult.status).map((step, idx) => (
-                    <div key={idx} className="flex items-start gap-3 text-xs font-mono">
+                    <div key={idx} className="flex items-start gap-3 text-xs">
                       <div className="mt-0.5 shrink-0">
                         {step.completed ? (
                           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
@@ -163,7 +163,7 @@ export default function ProjectTrackerModal({ isOpen, onClose }) {
 
             </div>
           ) : (
-            <div className="p-6 text-center space-y-2 bg-slate-900/60 rounded-xl border border-slate-800 font-mono">
+            <div className="p-6 text-center space-y-2 bg-slate-900/60 rounded-xl border border-slate-800">
               <AlertCircle className="w-6 h-6 text-rose-400 mx-auto" />
               <div className="text-xs text-rose-300 font-bold">No project record found for ID "{trackingId}".</div>
               <div className="text-[11px] text-slate-400">Please double check your ID or contact your account lead.</div>

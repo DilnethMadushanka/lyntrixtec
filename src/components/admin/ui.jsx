@@ -55,7 +55,7 @@ export function PanelHeader({ title, description, actions }) {
   return (
     <div className="flex items-start justify-between gap-4 px-5 sm:px-6 pt-5 sm:pt-6">
       <div className="min-w-0">
-        <h3 className="text-base font-medium tracking-[-0.02em] text-white">{title}</h3>
+        <h3 className="text-base font-semibold tracking-[-0.01em] text-white">{title}</h3>
         {description && <p className="mt-0.5 text-xs text-[var(--muted)]">{description}</p>}
       </div>
       {actions && <div className="flex items-center gap-2 shrink-0">{actions}</div>}
@@ -68,7 +68,7 @@ export function PageHeader({ eyebrow, title, description, actions }) {
     <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
       <div className="min-w-0">
         {eyebrow && <div className="label mb-2">{eyebrow}</div>}
-        <h1 className="text-[clamp(1.6rem,3vw,2.2rem)] font-medium tracking-[-0.04em] leading-tight text-white">{title}</h1>
+        <h1 className="text-[clamp(1.6rem,3vw,2.2rem)] font-semibold tracking-[-0.03em] leading-tight text-white">{title}</h1>
         {description && <p className="mt-1.5 text-sm text-[var(--muted)] max-w-2xl">{description}</p>}
       </div>
       {actions && <div className="flex flex-wrap items-center gap-2 shrink-0">{actions}</div>}
@@ -207,7 +207,7 @@ export function Modal({ title, eyebrow, onClose, children, footer, size = 'md' }
         <div className="flex items-start justify-between gap-4 p-5 sm:p-6 border-b border-[var(--line)]">
           <div className="min-w-0">
             {eyebrow && <div className="label break-all">{eyebrow}</div>}
-            <h3 className="text-xl font-medium tracking-[-0.03em] text-white mt-1 leading-snug">{title}</h3>
+            <h3 className="text-xl font-semibold tracking-[-0.02em] text-white mt-1 leading-snug">{title}</h3>
           </div>
           <button onClick={onClose} aria-label="Close" className="w-10 h-10 -mr-2 -mt-1 grid place-items-center rounded-full text-[var(--muted)] hover:text-white hover:bg-white/5 shrink-0">
             <X className="w-5 h-5" />
@@ -235,7 +235,7 @@ export function Drawer({ title, eyebrow, onClose, children, footer, headerExtra 
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0">
               {eyebrow && <div className="label break-all">{eyebrow}</div>}
-              <h3 className="text-xl font-medium tracking-[-0.03em] text-white mt-1 leading-snug break-words">{title}</h3>
+              <h3 className="text-xl font-semibold tracking-[-0.02em] text-white mt-1 leading-snug break-words">{title}</h3>
             </div>
             <button onClick={onClose} aria-label="Close" className="w-10 h-10 -mr-2 -mt-1 grid place-items-center rounded-full text-[var(--muted)] hover:text-white hover:bg-white/5 shrink-0">
               <X className="w-5 h-5" />

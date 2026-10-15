@@ -175,13 +175,13 @@ export default function CaseStudiesSection() {
                       <span className="font-mono text-xs text-white/60">{String(i + 1).padStart(2, '0')}</span>
                     </div>
                     <div className="absolute inset-x-5 bottom-4">
-                      <div className="text-[clamp(1.9rem,3.4vw,2.5rem)] font-medium tracking-[-0.05em] leading-none text-white">{headline}</div>
+                      <div className="text-[clamp(1.9rem,3.4vw,2.5rem)] font-medium tracking-[-0.04em] leading-none text-white">{headline}</div>
                     </div>
                   </div>
 
                   <div className="p-5 sm:p-6 flex flex-col flex-1">
                     <div className="label">{cs.client}</div>
-                    <h3 className="text-xl font-medium tracking-[-0.03em] text-white leading-snug mt-2">{cs.title}</h3>
+                    <h3 className="text-xl font-medium tracking-[-0.02em] text-white leading-snug mt-2">{cs.title}</h3>
                     <p className="mt-3 text-sm text-[var(--text-2)] leading-relaxed">{cs.summary}</p>
 
                     <div className="mt-5 flex flex-wrap gap-1.5">

@@ -61,7 +61,7 @@ export default function Footer({ isAdminLoggedIn, onOpenAdminDashboard }) {
           <div className="col-span-2 lg:col-span-5 space-y-5">
             <div className="flex items-center gap-2.5">
               <img src="/logo-icon.svg" alt="" className="w-8 h-8 object-contain" />
-              <span className="font-semibold text-lg tracking-[-0.03em] text-white">Lyntrix</span>
+              <span className="font-semibold text-lg tracking-[-0.02em] text-white">Lyntrix</span>
             </div>
             <p className="text-sm text-[var(--muted)] max-w-sm leading-relaxed">
               Resilient custom software, high-concurrency cloud architecture and zero-trust security for modern organizations.

@@ -78,9 +78,9 @@ export default function Navbar({
             {/* Brand */}
             <a href="#" className="flex items-center gap-2.5 shrink-0" aria-label="Lyntrix home">
               <img src="/logo-icon.svg" alt="" className="w-8 h-8 object-contain" />
-              <span className="font-semibold text-[1.15rem] tracking-[-0.03em] text-white leading-none">
+              <span className="font-semibold text-[1.15rem] tracking-[-0.02em] text-white leading-none">
                 Lyntrix
-                <span className="hidden sm:inline ml-2 font-mono text-[10px] font-normal tracking-[0.14em] text-[var(--muted)] uppercase">
+                <span className="hidden sm:inline ml-2 text-[10px] font-semibold tracking-[0.14em] text-[var(--muted)] uppercase">
                   IT Services
                 </span>
               </span>
@@ -177,7 +177,7 @@ export default function Navbar({
                   key={l.name}
                   href={l.href}
                   onClick={close}
-                  className="flex items-center justify-between py-4 border-b border-white/[0.06] text-3xl font-medium tracking-[-0.04em] text-white"
+                  className="flex items-center justify-between py-4 border-b border-white/[0.06] text-3xl font-medium tracking-[-0.03em] text-white"
                 >
                   {l.name}
                   <ArrowRight className="w-5 h-5 text-[var(--muted)]" />

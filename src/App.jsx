@@ -230,20 +230,20 @@ export default function App() {
           </div>
 
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-950/90 border border-amber-600/80 text-xs font-mono text-amber-300 font-bold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-950/90 border border-amber-600/80 text-xs text-amber-300 font-bold uppercase tracking-wider">
               <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
               <span>SYSTEM UPGRADE IN PROGRESS</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-medium tracking-[-0.04em] text-white">
+            <h1 className="text-3xl sm:text-4xl font-medium tracking-[-0.03em] text-white">
               Scheduled Platform Maintenance
             </h1>
           </div>
 
-          <p className="text-sm text-slate-300 font-mono leading-relaxed bg-slate-950/80 p-4 rounded-2xl border border-slate-800">
+          <p className="text-sm text-slate-300 leading-relaxed bg-slate-950/80 p-4 rounded-2xl border border-slate-800">
             {maintenanceConfig.message || '⚠️ Scheduled Platform Upgrade in Progress. Systems are undergoing routine maintenance.'}
           </p>
 
-          <div className="grid grid-cols-2 gap-3 p-4 rounded-2xl bg-slate-900/90 border border-slate-800 text-xs font-mono">
+          <div className="grid grid-cols-2 gap-3 p-4 rounded-2xl bg-slate-900/90 border border-slate-800 text-xs">
             <div>
               <div className="text-slate-400">ESTIMATED ETA</div>
               <div className="text-amber-400 font-bold text-base mt-0.5">{maintenanceConfig.eta || '30 Minutes'}</div>
@@ -254,7 +254,7 @@ export default function App() {
             </div>
           </div>
 
-          <div className="pt-2 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-center gap-3 text-xs font-mono">
+          <div className="pt-2 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-center gap-3 text-xs">
             <a
               href="mailto:lyntrixtec@gmail.com"
               className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-900 text-slate-200 border border-slate-700 hover:text-cyan-400 transition-colors flex items-center justify-center gap-2"
@@ -278,7 +278,7 @@ export default function App() {
                 setInitialAuthMode('signin');
                 setIsAuthOpen(true);
               }}
-              className="text-[11px] text-slate-400 hover:text-cyan-400 underline font-mono"
+              className="text-[11px] text-slate-400 hover:text-cyan-400 underline"
             >
               Admin Sign In / Login Bypass
             </button>

@@ -25,7 +25,7 @@ function Step({ n, title, children }) {
   return (
     <fieldset className="space-y-3 min-w-0">
       <legend className="flex items-center gap-2.5 mb-3">
-        <span className="font-mono text-xs text-[var(--accent)]">0{n}</span>
+        <span className="text-xs font-semibold text-[var(--accent)] tabular-nums">0{n}</span>
         <span className="text-sm font-medium text-white">{title}</span>
       </legend>
       {children}
@@ -156,7 +156,7 @@ export default function InteractiveCostCalculator({ onSelectEstimate, dbTrigger 
                 {serviceOptions.map((s) => (
                   <Option key={s.id} selected={serviceType === s.id} onClick={() => setServiceType(s.id)}>
                     <span className="font-medium">{s.name}</span>
-                    <span className="block text-xs text-[var(--muted)] font-mono mt-0.5">from ${s.base.toLocaleString()}</span>
+                    <span className="block text-xs text-[var(--muted)] tabular-nums mt-0.5">from ${s.base.toLocaleString()}</span>
                   </Option>
                 ))}
               </div>
@@ -167,7 +167,7 @@ export default function InteractiveCostCalculator({ onSelectEstimate, dbTrigger 
                 {SCALE_OPTIONS.map((sc) => (
                   <Option key={sc.id} selected={scale === sc.id} onClick={() => setScale(sc.id)}>
                     <span className="font-medium">{sc.name}</span>
-                    <span className="block text-xs text-[var(--muted)] font-mono mt-0.5">{sc.duration}</span>
+                    <span className="block text-xs text-[var(--muted)] tabular-nums mt-0.5">{sc.duration}</span>
                   </Option>
                 ))}
               </div>
@@ -200,7 +200,7 @@ export default function InteractiveCostCalculator({ onSelectEstimate, dbTrigger 
                 {dbAddons.filter((a) => !a.archived).map((addon) => (
                   <Option key={addon.id} multi selected={selectedAddons.includes(addon.id)} onClick={() => toggleAddon(addon.id)}>
                     <span className="font-medium">{addon.title || addon.name}</span>
-                    <span className="block text-xs text-[var(--muted)] font-mono mt-0.5">+${addon.price.toLocaleString()}</span>
+                    <span className="block text-xs text-[var(--muted)] tabular-nums mt-0.5">+${addon.price.toLocaleString()}</span>
                   </Option>
                 ))}
               </div>
@@ -215,7 +215,7 @@ export default function InteractiveCostCalculator({ onSelectEstimate, dbTrigger 
               <div className="mt-4">
                 <div className="stat !text-[clamp(2rem,3.6vw,2.6rem)] tabular-nums break-words">
                   ${min.toLocaleString()}
-                  <span className="block text-[var(--muted)] text-[0.55em] tracking-[-0.03em] mt-1">to ${max.toLocaleString()}</span>
+                  <span className="block text-[var(--muted)] text-[0.55em] tracking-[-0.02em] mt-1">to ${max.toLocaleString()}</span>
                 </div>
                 <div className="mt-4 chip chip-accent">Delivery · {selectedScale.duration}</div>
               </div>
@@ -267,7 +267,7 @@ export default function InteractiveCostCalculator({ onSelectEstimate, dbTrigger 
         <div className="flex items-center justify-between gap-3 rounded-full border border-white/10 bg-[#0e0e13]/90 backdrop-blur-xl pl-5 pr-1.5 py-1.5 shadow-[0_16px_50px_-10px_rgba(0,0,0,0.9)]">
           <div className="min-w-0">
             <div className="label !text-[10px]">Estimate</div>
-            <div className="text-white font-medium tabular-nums tracking-[-0.02em] truncate">
+            <div className="text-white font-medium tabular-nums tracking-[-0.01em] truncate">
               ${min.toLocaleString()} – ${max.toLocaleString()}
             </div>
           </div>

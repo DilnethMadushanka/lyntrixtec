@@ -238,7 +238,7 @@ export default function UserProfileModal({ isOpen, onClose, currentUser, onProfi
         {/* User Hero Banner (Mobile, Tablet & Desktop Responsive) */}
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4 pb-5 border-b border-slate-800/80">
           <div className="relative shrink-0">
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-tr from-cyan-500 via-sky-500 to-indigo-500 text-slate-950 font-extrabold flex items-center justify-center text-xl sm:text-2xl shadow-lg shadow-cyan-500/30 border-2 border-white/20">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-tr from-cyan-500 via-sky-500 to-indigo-500 text-slate-950 font-semibold tracking-tight flex items-center justify-center text-xl sm:text-2xl shadow-lg shadow-cyan-500/30 border-2 border-white/20">
               {currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'U'}
             </div>
             <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-emerald-500 border-2 border-slate-950" title="Active Client Account" />
@@ -247,20 +247,20 @@ export default function UserProfileModal({ isOpen, onClose, currentUser, onProfi
           <div className="text-center sm:text-left space-y-1 w-full">
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 sm:gap-2">
               <h3 className="text-lg sm:text-xl font-bold text-white font-sans">{currentUser.name}</h3>
-              <span className="text-xs font-mono text-cyan-400 font-bold bg-cyan-950/60 px-2 py-0.5 rounded-md border border-cyan-800/80">
+              <span className="text-xs text-cyan-400 font-bold bg-cyan-950/60 px-2 py-0.5 rounded-md border border-cyan-800/80">
                 @{currentUser.username || currentUser.email?.split('@')[0]}
               </span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-800 font-bold">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-800 font-bold">
                 {currentUser.role || 'Client'}
               </span>
               {currentUser.authProvider === 'Google' && (
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800">
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800">
                   Google Verified
                 </span>
               )}
             </div>
-            <p className="text-[11px] sm:text-xs font-mono text-slate-400 break-all">{currentUser.email}</p>
-            <div className="text-[10px] sm:text-[11px] font-mono text-slate-500 flex flex-wrap items-center justify-center sm:justify-start gap-2.5 sm:gap-3 pt-0.5">
+            <p className="text-[11px] sm:text-xs text-slate-400 break-all">{currentUser.email}</p>
+            <div className="text-[10px] sm:text-[11px] text-slate-500 flex flex-wrap items-center justify-center sm:justify-start gap-2.5 sm:gap-3 pt-0.5">
               <span>ID: <strong className="text-slate-300">{currentUser.id || 'USR-1001'}</strong></span>
               <span>• Joined: <strong className="text-slate-300">{currentUser.joinedDate || '2026-08-01'}</strong></span>
             </div>
@@ -268,7 +268,7 @@ export default function UserProfileModal({ isOpen, onClose, currentUser, onProfi
         </div>
 
         {/* Responsive Navigation Tabs */}
-        <div className="flex bg-slate-900/90 p-1 rounded-xl sm:rounded-2xl border border-slate-800 my-4 text-[11px] sm:text-xs font-mono">
+        <div className="flex bg-slate-900/90 p-1 rounded-xl sm:rounded-2xl border border-slate-800 my-4 text-[11px] sm:text-xs">
           <button
             onClick={() => { setActiveTab('profile'); setError(''); setNotice(''); }}
             className={`flex-1 py-2 sm:py-2.5 rounded-lg sm:rounded-xl transition-all flex items-center justify-center gap-1 sm:gap-1.5 ${
@@ -305,14 +305,14 @@ export default function UserProfileModal({ isOpen, onClose, currentUser, onProfi
 
         {/* Notice Banners */}
         {notice && (
-          <div className="mb-4 p-3 rounded-xl bg-emerald-950/80 border border-emerald-500/70 text-emerald-300 text-xs font-mono flex items-center gap-2 animate-in fade-in">
+          <div className="mb-4 p-3 rounded-xl bg-emerald-950/80 border border-emerald-500/70 text-emerald-300 text-xs flex items-center gap-2 animate-in fade-in">
             <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
             <span>{notice}</span>
           </div>
         )}
 
         {error && (
-          <div className="mb-4 p-3 rounded-xl bg-rose-950/80 border border-rose-500/70 text-rose-300 text-xs font-mono flex items-center gap-2 animate-in fade-in">
+          <div className="mb-4 p-3 rounded-xl bg-rose-950/80 border border-rose-500/70 text-rose-300 text-xs flex items-center gap-2 animate-in fade-in">
             <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
             <span>{error}</span>
           </div>
@@ -320,7 +320,7 @@ export default function UserProfileModal({ isOpen, onClose, currentUser, onProfi
 
         {/* TAB 1: EDIT PROFILE DETAILS */}
         {activeTab === 'profile' && (
-          <form onSubmit={handleUpdateProfile} className="space-y-3.5 sm:space-y-4 text-xs font-mono animate-in fade-in duration-200">
+          <form onSubmit={handleUpdateProfile} className="space-y-3.5 sm:space-y-4 text-xs animate-in fade-in duration-200">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               
               <div className="space-y-1">
@@ -340,14 +340,14 @@ export default function UserProfileModal({ isOpen, onClose, currentUser, onProfi
               <div className="space-y-1">
                 <label className="text-slate-300 block text-[11px] sm:text-xs">Username (@handle) *</label>
                 <div className="relative">
-                  <span className="text-cyan-400 font-mono text-xs font-bold absolute left-3.5 top-2.5 sm:top-3">@</span>
+                  <span className="text-cyan-400 text-sm font-semibold absolute left-3.5 top-2.5 sm:top-3">@</span>
                   <input
                     type="text"
                     required
                     placeholder="e.g. dilneth"
                     value={formData.username}
                     onChange={e => setFormData({ ...formData, username: e.target.value.toLowerCase().replace(/[^a-z0-9_.-]/g, '') })}
-                    className="w-full pl-8 sm:pl-9 pr-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-900 border border-slate-800 text-cyan-300 text-xs font-mono focus:border-cyan-400 focus:outline-none transition-colors"
+                    className="w-full pl-8 sm:pl-9 pr-3.5 py-2.5 sm:py-3 rounded-xl bg-slate-900 border border-slate-800 text-cyan-300 text-xs focus:border-cyan-400 focus:outline-none transition-colors"
                   />
                 </div>
               </div>
@@ -431,7 +431,7 @@ export default function UserProfileModal({ isOpen, onClose, currentUser, onProfi
               <button
                 type="submit"
                 disabled={loading}
-                className="glow-btn w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-indigo-500 text-slate-950 font-bold text-xs font-mono flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20"
+                className="glow-btn w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-indigo-500 text-slate-950 font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20"
               >
                 <Save className="w-4 h-4" />
                 <span>{loading ? 'Saving Changes...' : 'Save Profile Changes'}</span>
@@ -442,7 +442,7 @@ export default function UserProfileModal({ isOpen, onClose, currentUser, onProfi
 
         {/* TAB 2: SECURITY & PASSWORD WITH 6-DIGIT EMAIL OTP */}
         {activeTab === 'security' && (
-          <div className="space-y-4 text-xs font-mono animate-in fade-in duration-200">
+          <div className="space-y-4 text-xs animate-in fade-in duration-200">
             
             <div className="p-3.5 sm:p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
               <div className="text-cyan-400 font-bold flex items-center gap-2 text-xs sm:text-sm">
@@ -506,7 +506,7 @@ export default function UserProfileModal({ isOpen, onClose, currentUser, onProfi
                   <button
                     type="submit"
                     disabled={loading}
-                    className="glow-btn w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-indigo-500 text-slate-950 font-bold text-xs font-mono flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20"
+                    className="glow-btn w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-indigo-500 text-slate-950 font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20"
                   >
                     <KeyRound className="w-4 h-4" />
                     <span>{loading ? 'Dispatching OTP Code...' : 'Send OTP to Authorize Change'}</span>
@@ -515,7 +515,7 @@ export default function UserProfileModal({ isOpen, onClose, currentUser, onProfi
               </form>
             ) : (
               <form onSubmit={handleVerifyPasswordOtp} className="space-y-4 sm:space-y-5 animate-in fade-in zoom-in-95 duration-200">
-                <div className="p-3.5 sm:p-4 rounded-xl bg-cyan-950/40 border border-cyan-800/60 text-xs font-mono text-center space-y-2">
+                <div className="p-3.5 sm:p-4 rounded-xl bg-cyan-950/40 border border-cyan-800/60 text-xs text-center space-y-2">
                   <div className="text-cyan-400 font-bold">Verification Code Dispatched!</div>
                   <div className="text-slate-300 text-[11px] sm:text-xs">
                     We sent a 6-digit OTP code to <strong className="text-white break-all">{currentUser.email}</strong>.
@@ -546,12 +546,12 @@ export default function UserProfileModal({ isOpen, onClose, currentUser, onProfi
                       value={digit}
                       onChange={e => handleOtpDigitChange(idx, e.target.value)}
                       onKeyDown={e => handleOtpKeyDown(idx, e)}
-                      className="w-9 h-11 sm:w-12 sm:h-14 text-center text-lg sm:text-xl font-bold font-mono rounded-xl bg-slate-900 border border-slate-800 text-cyan-300 focus:border-cyan-400 focus:outline-none transition-colors"
+                      className="w-9 h-11 sm:w-12 sm:h-14 text-center text-lg sm:text-xl font-bold rounded-xl bg-slate-900 border border-slate-800 text-cyan-300 focus:border-cyan-400 focus:outline-none transition-colors"
                     />
                   ))}
                 </div>
 
-                <div className="flex items-center justify-between text-[11px] sm:text-xs font-mono text-slate-400">
+                <div className="flex items-center justify-between text-[11px] sm:text-xs text-slate-400">
                   <span>Expires in: <strong className="text-white">{Math.floor(timerSeconds / 60)}:{(timerSeconds % 60).toString().padStart(2, '0')}</strong></span>
                   <button
                     type="button"
@@ -567,14 +567,14 @@ export default function UserProfileModal({ isOpen, onClose, currentUser, onProfi
                   <button
                     type="button"
                     onClick={() => setPasswordStep('input')}
-                    className="py-3 px-4 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 font-mono text-xs font-bold hover:bg-slate-800 transition-colors"
+                    className="py-3 px-4 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 text-sm font-semibold hover:bg-slate-800 transition-colors"
                   >
                     Back
                   </button>
                   <button
                     type="submit"
                     disabled={loading}
-                    className="flex-1 py-3 px-6 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-indigo-500 text-slate-950 font-bold text-xs font-mono flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/25"
+                    className="flex-1 py-3 px-6 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-indigo-500 text-slate-950 font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/25"
                   >
                     {loading ? 'Verifying Code...' : 'Verify OTP & Save Password'}
                   </button>
@@ -589,7 +589,7 @@ export default function UserProfileModal({ isOpen, onClose, currentUser, onProfi
         {activeTab === 'orders' && (
           <div className="space-y-3 sm:space-y-4 animate-in fade-in duration-200">
             {userInquiries.length === 0 ? (
-              <div className="p-6 sm:p-8 rounded-2xl bg-slate-900/60 border border-slate-800 text-center space-y-2 sm:space-y-3 font-mono text-xs">
+              <div className="p-6 sm:p-8 rounded-2xl bg-slate-900/60 border border-slate-800 text-center space-y-2 sm:space-y-3 text-xs">
                 <FileText className="w-8 h-8 text-slate-600 mx-auto" />
                 <div className="text-slate-300 font-bold">No Proposals Submitted Yet</div>
                 <p className="text-slate-500 max-w-sm mx-auto text-[11px]">
@@ -601,7 +601,7 @@ export default function UserProfileModal({ isOpen, onClose, currentUser, onProfi
                 {userInquiries.map((inq) => (
                   <div 
                     key={inq.id}
-                    className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-slate-900 border border-slate-800 hover:border-cyan-500/40 transition-all font-mono text-xs space-y-2"
+                    className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-slate-900 border border-slate-800 hover:border-cyan-500/40 transition-all text-xs space-y-2"
                   >
                     <div className="flex flex-wrap items-center justify-between gap-1.5">
                       <div className="flex items-center gap-1.5 sm:gap-2">

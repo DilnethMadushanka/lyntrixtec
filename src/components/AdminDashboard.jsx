@@ -144,7 +144,7 @@ function Shell({ page, params, go, onLogout, onReturnToSite }) {
       <aside className="hidden lg:flex fixed inset-y-0 left-0 w-64 flex-col border-r border-[var(--line)] bg-[#0b0b0f] z-40">
         <div className="h-16 px-5 flex items-center gap-2.5 shrink-0">
           <img src="/logo-icon.svg" alt="" className="w-7 h-7" />
-          <span className="font-semibold tracking-[-0.03em] text-white">Lyntrix</span>
+          <span className="font-semibold tracking-[-0.02em] text-white">Lyntrix</span>
           <span className="label !text-[10px] mt-0.5">Console</span>
         </div>
 
