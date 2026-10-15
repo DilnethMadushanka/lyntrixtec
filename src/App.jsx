@@ -44,7 +44,20 @@ export default function App() {
   const [initialAuthMode, setInitialAuthMode] = useState('signin');
   const [initialAuthEmail, setInitialAuthEmail] = useState('');
   const [verificationToast, setVerificationToast] = useState('');
-  const [viewMode, setViewMode] = useState('site'); // 'site' or 'admin'
+  // 'site' or 'admin'; remembered for this tab so a refresh keeps an admin in the console
+  const [viewMode, setViewMode] = useState(() => {
+    try {
+      return sessionStorage.getItem('lyntrix_view') === 'admin' ? 'admin' : 'site';
+    } catch (e) {
+      return 'site';
+    }
+  });
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem('lyntrix_view', viewMode);
+    } catch (e) {}
+  }, [viewMode]);
   const [dbTrigger, setDbTrigger] = useState(0);
 
   // Server Maintenance Mode Config State

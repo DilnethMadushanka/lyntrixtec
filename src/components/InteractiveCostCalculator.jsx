@@ -96,7 +96,7 @@ export default function InteractiveCostCalculator({ onSelectEstimate, dbTrigger 
     return () => window.removeEventListener('lyntrix-db-updated', handleDbUpdate);
   }, [dbTrigger]);
 
-  const serviceOptions = dbServices.map((s) => ({
+  const serviceOptions = dbServices.filter((s) => !s.archived).map((s) => ({
     id: s.id,
     name: s.title,
     label: `${s.title} (Base $${s.basePrice.toLocaleString()})`,
@@ -197,7 +197,7 @@ export default function InteractiveCostCalculator({ onSelectEstimate, dbTrigger 
 
             <Step n="5" title="Optional add-ons">
               <div className="grid sm:grid-cols-2 gap-2.5">
-                {dbAddons.map((addon) => (
+                {dbAddons.filter((a) => !a.archived).map((addon) => (
                   <Option key={addon.id} multi selected={selectedAddons.includes(addon.id)} onClick={() => toggleAddon(addon.id)}>
                     <span className="font-medium">{addon.title || addon.name}</span>
                     <span className="block text-xs text-[var(--muted)] font-mono mt-0.5">+${addon.price.toLocaleString()}</span>

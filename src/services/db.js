@@ -13,8 +13,16 @@ const STORAGE_KEYS = {
   CURRENT_USER: 'lyntrix_current_user',
   ADMINS: 'lyntrix_cloud_admins',
   CURRENT_ADMIN: 'lyntrix_current_admin',
-  MAINTENANCE: 'lyntrix_cloud_maintenance'
+  MAINTENANCE: 'lyntrix_cloud_maintenance',
+  ACTIVITY: 'lyntrix_cloud_activity'
 };
+
+// Demo records that only make sense on a fresh, offline install. Once the cloud DB is connected
+// they are hidden so they never mix with real clients and leads.
+const DEMO_IDS = new Set(['USR-1001', 'USR-1002', 'USR-1003', 'LYN-9024', 'LYN-8812']);
+const withoutDemo = (list) => (isFirebaseConfigured ? list.filter((r) => r && !DEMO_IDS.has(r.id)) : list);
+
+const ACTIVITY_LIMIT = 200;
 
 const DEFAULT_MAINTENANCE = {
   enabled: false,
@@ -232,7 +240,10 @@ const sanitizeInquiryForCloud = (inq) => ({
   consultationDate: inq.consultationDate || null,
   consultationTime: inq.consultationTime || null,
   meetingPlatform: inq.meetingPlatform || null,
-  meetingLink: inq.meetingLink || null
+  meetingLink: inq.meetingLink || null,
+  notes: Array.isArray(inq.notes) ? inq.notes : [],
+  statusHistory: Array.isArray(inq.statusHistory) ? inq.statusHistory : [],
+  updatedAt: inq.updatedAt || null
 });
 
 const sanitizeAdminForCloud = (a) => ({
@@ -306,8 +317,8 @@ export const db = {
       } catch (e) {}
 
       if (cloudInquiries && cloudInquiries.length > 0) {
-        const baseMerged = mergeDatasets(DEFAULT_INQUIRIES, cloudInquiries, 'id');
-        const fullyMerged = mergeDatasets(baseMerged, localInquiries, 'id');
+        const baseMerged = mergeDatasets(withoutDemo(DEFAULT_INQUIRIES), cloudInquiries, 'id');
+        const fullyMerged = withoutDemo(mergeDatasets(baseMerged, localInquiries, 'id'));
         localStorage.setItem(STORAGE_KEYS.INQUIRIES, JSON.stringify(fullyMerged));
 
         const cloudIds = new Set(cloudInquiries.map(c => c.id));
@@ -326,8 +337,8 @@ export const db = {
       } catch (e) {}
 
       const fetchedCloudUsers = cloudUsers || [];
-      const baseMergedUsers = mergeDatasets(DEFAULT_USERS, fetchedCloudUsers, 'id', 'email');
-      const fullyMergedUsers = mergeDatasets(baseMergedUsers, localUsers, 'id', 'email');
+      const baseMergedUsers = mergeDatasets(withoutDemo(DEFAULT_USERS), fetchedCloudUsers, 'id', 'email');
+      const fullyMergedUsers = withoutDemo(mergeDatasets(baseMergedUsers, localUsers, 'id', 'email'));
       localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(fullyMergedUsers));
 
       if (fullyMergedUsers.length > 0) {
@@ -397,6 +408,25 @@ export const db = {
         await db.saveAddons(localAddons);
       }
 
+      // 6. Site settings (maintenance mode) and the admin activity feed
+      try {
+        const settings = await cloud.list('settings');
+        const maintenance = settings.find((d) => d.id === 'maintenance');
+        if (maintenance) {
+          localStorage.setItem(STORAGE_KEYS.MAINTENANCE, JSON.stringify(maintenance));
+          window.dispatchEvent(new Event('lyntrix-maintenance-updated'));
+        }
+      } catch (e) {}
+      try {
+        const activity = await cloud.list('activity');
+        if (activity.length > 0) {
+          const merged = mergeDatasets(db.getActivity(), activity, 'id', null)
+            .sort((a, b) => String(b.at).localeCompare(String(a.at)))
+            .slice(0, ACTIVITY_LIMIT);
+          localStorage.setItem(STORAGE_KEYS.ACTIVITY, JSON.stringify(merged));
+        }
+      } catch (e) {}
+
       notifyDbUpdate();
     } catch (e) {
       console.warn('[FIRESTORE SYNC NOTE]:', e.message);
@@ -434,7 +464,8 @@ export const db = {
           badge: s.badge || '',
           tagline: s.tagline || '',
           architect: s.architect || '',
-          sla: s.sla || ''
+          sla: s.sla || '',
+          archived: Boolean(s.archived)
         }));
                 await cloud.upsert('services', payload);
       }
@@ -482,7 +513,8 @@ export const db = {
           id: a.id,
           title: a.title,
           price: Number(a.price) || 0,
-          popular: Boolean(a.popular)
+          popular: Boolean(a.popular),
+          archived: Boolean(a.archived)
         }));
         await cloud.upsert('addons', payload);
       }
@@ -497,15 +529,15 @@ export const db = {
       const saved = localStorage.getItem(STORAGE_KEYS.INQUIRIES);
       if (!saved) {
         localStorage.setItem(STORAGE_KEYS.INQUIRIES, JSON.stringify(DEFAULT_INQUIRIES));
-        return DEFAULT_INQUIRIES;
+        return withoutDemo(DEFAULT_INQUIRIES);
       }
       const parsed = JSON.parse(saved);
       if (!Array.isArray(parsed) || parsed.length === 0) {
-        return DEFAULT_INQUIRIES;
+        return withoutDemo(DEFAULT_INQUIRIES);
       }
-      return mergeDatasets(DEFAULT_INQUIRIES, parsed, 'id');
+      return withoutDemo(mergeDatasets(DEFAULT_INQUIRIES, parsed, 'id'));
     } catch (e) {
-      return DEFAULT_INQUIRIES;
+      return withoutDemo(DEFAULT_INQUIRIES);
     }
   },
 
@@ -542,7 +574,13 @@ export const db = {
     const inquiries = db.getInquiries();
     const updated = inquiries.map(item => {
       if (item.id === inquiryId) {
-        return { ...item, status: newStatus };
+        const at = new Date().toISOString();
+        return {
+          ...item,
+          status: newStatus,
+          updatedAt: at,
+          statusHistory: [...(item.statusHistory || []), { status: newStatus, at }]
+        };
       }
       return item;
     });
@@ -582,15 +620,15 @@ export const db = {
       const saved = localStorage.getItem(STORAGE_KEYS.USERS);
       if (!saved) {
         localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(DEFAULT_USERS));
-        return DEFAULT_USERS;
+        return withoutDemo(DEFAULT_USERS);
       }
       const parsed = JSON.parse(saved);
       if (!Array.isArray(parsed) || parsed.length === 0) {
-        return DEFAULT_USERS;
+        return withoutDemo(DEFAULT_USERS);
       }
-      return mergeDatasets(DEFAULT_USERS, parsed, 'id', 'email');
+      return withoutDemo(mergeDatasets(DEFAULT_USERS, parsed, 'id', 'email'));
     } catch (e) {
-      return DEFAULT_USERS;
+      return withoutDemo(DEFAULT_USERS);
     }
   },
 
@@ -976,6 +1014,12 @@ export const db = {
     if (admins.length <= 1) {
       throw new Error('Cannot delete the primary root administrator account.');
     }
+    // Built-in accounts are merged back from DEFAULT_ADMINS on every read, so they are disabled instead
+    if (DEFAULT_ADMINS.some(a => a.id === adminId)) {
+      const disabled = admins.map(a => (a.id === adminId ? { ...a, status: 'Suspended' } : a));
+      await db.saveAdmins(disabled);
+      return disabled;
+    }
     const updated = admins.filter(a => a.id !== adminId);
     await db.saveAdmins(updated);
 
@@ -988,6 +1032,74 @@ export const db = {
     }
     return updated;
   },
+
+  updateAdmin: async (adminId, fields) => {
+    const admins = db.getAdmins();
+    const updated = admins.map(a => (a.id === adminId ? { ...a, ...fields } : a));
+    await db.saveAdmins(updated);
+    return updated;
+  },
+
+  isBuiltInAdmin: (adminId) => DEFAULT_ADMINS.some(a => a.id === adminId),
+
+  // --- Admin activity feed (shared across admins through the cloud) ---
+  getActivity: () => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.ACTIVITY);
+      const parsed = saved ? JSON.parse(saved) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      return [];
+    }
+  },
+
+  logActivity: async (action, detail = '', kind = 'info') => {
+    const actor = db.getCurrentAdmin() || db.getCurrentUser();
+    const entry = {
+      id: `ACT-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+      at: new Date().toISOString(),
+      actor: actor ? (actor.name || actor.email) : 'System',
+      action,
+      detail,
+      kind
+    };
+    const list = [entry, ...db.getActivity()].slice(0, ACTIVITY_LIMIT);
+    try {
+      localStorage.setItem(STORAGE_KEYS.ACTIVITY, JSON.stringify(list));
+    } catch (e) {}
+    notifyDbUpdate();
+    if (isFirebaseConfigured) {
+      try {
+        await cloud.upsert('activity', entry);
+      } catch (e) {
+        console.warn('[FIRESTORE ACTIVITY NOTE]:', e.message);
+      }
+    }
+    return entry;
+  },
+
+  // --- Inquiry notes ---
+  addInquiryNote: async (inquiryId, text) => {
+    const actor = db.getCurrentAdmin() || db.getCurrentUser();
+    const note = { at: new Date().toISOString(), by: actor ? (actor.name || actor.email) : 'Admin', text };
+    const updated = db.getInquiries().map(item =>
+      item.id === inquiryId ? { ...item, notes: [...(item.notes || []), note], updatedAt: note.at } : item
+    );
+    await db.saveInquiries(updated);
+    return updated;
+  },
+
+  // --- Full backup of everything the console manages ---
+  exportBackup: () => ({
+    exportedAt: new Date().toISOString(),
+    services: db.getServices(),
+    addons: db.getAddons(),
+    inquiries: db.getInquiries(),
+    users: db.getUsers(),
+    admins: db.getAdmins(),
+    maintenance: db.getMaintenanceConfig(),
+    activity: db.getActivity()
+  }),
 
   getCurrentAdmin: () => {
     try {
@@ -1025,6 +1137,11 @@ export const db = {
     localStorage.setItem(STORAGE_KEYS.MAINTENANCE, JSON.stringify(updated));
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new Event('lyntrix-maintenance-updated'));
+    }
+    if (isFirebaseConfigured) {
+      cloud.upsert('settings', { ...updated, id: 'maintenance' }).catch((e) => {
+        console.warn('[FIRESTORE MAINTENANCE NOTE]:', e.message);
+      });
     }
     return updated;
   }

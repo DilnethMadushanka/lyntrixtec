@@ -3,7 +3,7 @@ rules_version = '2';
 // Lyntrix Cloud Firestore rules.
 //
 // The site authenticates users itself (records in `users` / `admins`) rather than through
-// Firebase Auth, so the browser needs open access to these five collections, the same access the
+// Firebase Auth, so the browser needs open access to these collections, the same access the
 // old Supabase "public read/write" policies granted. Every other path is denied.
 //
 // WARNING: this means anyone holding the public web config can read and write these collections,
@@ -11,14 +11,16 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     function idMatches(docId) {
-      return request.resource.data.id == docId;
+      return request.resource != null && request.resource.data.id == docId;
     }
 
-    match /services/{docId}  { allow read; allow write: if idMatches(docId); allow delete; }
-    match /addons/{docId}    { allow read; allow write: if idMatches(docId); allow delete; }
-    match /inquiries/{docId} { allow read; allow write: if idMatches(docId); allow delete; }
-    match /users/{docId}     { allow read; allow write: if idMatches(docId); allow delete; }
-    match /admins/{docId}    { allow read; allow write: if idMatches(docId); allow delete; }
+    match /services/{docId}  { allow read, delete: if true; allow write: if idMatches(docId); }
+    match /addons/{docId}    { allow read, delete: if true; allow write: if idMatches(docId); }
+    match /inquiries/{docId} { allow read, delete: if true; allow write: if idMatches(docId); }
+    match /users/{docId}     { allow read, delete: if true; allow write: if idMatches(docId); }
+    match /admins/{docId}    { allow read, delete: if true; allow write: if idMatches(docId); }
+    match /settings/{docId}  { allow read, delete: if true; allow write: if idMatches(docId); }
+    match /activity/{docId}  { allow read, delete: if true; allow write: if idMatches(docId); }
 
     match /{document=**} { allow read, write: if false; }
   }

@@ -886,3 +886,7 @@ select.field option { background: var(--surface-2); }
 }
 .snap-dots button[aria-current='true'] { width: 1.5rem; background: var(--accent); }
 @media (min-width: 640px) { .snap-dots { display: none; } }
+
+/* Admin console: side drawer slides in from the right */
+.drawer-in { animation: drawerIn 0.45s var(--ease) both; }
+@keyframes drawerIn { from { transform: translateX(40px); opacity: 0; } }
