@@ -1070,3 +1070,10 @@ select.field option { background: var(--surface-2); }
   .hero-emblem { top: 9rem; opacity: 0.16; }
   .hero-floor { top: 40rem; }
 }
+
+/* Hero display type: Space Grotesk for the headline, Chakra Petch's angular
+   italic (cut corners like the logo) for the gradient phrase */
+:root { --font-display: 'Space Grotesk', var(--font-sans); --font-tech: 'Chakra Petch', var(--font-sans); }
+.hero-h1 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.045em; line-height: 1.02; }
+.hero-h1 .serif { font-family: var(--font-tech); font-weight: 700; letter-spacing: -0.02em; padding-right: 0.12em; }
+#hero-section .stat { font-family: var(--font-display); letter-spacing: -0.04em; }
