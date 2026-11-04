@@ -895,3 +895,6 @@ select.field option { background: var(--surface-2); }
 /* Admin console: side drawer slides in from the right */
 .drawer-in { animation: drawerIn 0.45s var(--ease) both; }
 @keyframes drawerIn { from { transform: translateX(40px); opacity: 0; } }
+
+/* About emblem: soft glow in the logo colours */
+.about-mark { filter: drop-shadow(0 0 36px rgba(10, 188, 255, 0.22)) drop-shadow(0 0 56px rgba(139, 69, 234, 0.2)); }

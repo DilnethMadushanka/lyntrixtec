@@ -32,10 +32,10 @@ export default function AboutSection() {
         <div className="mt-10 sm:mt-20 grid lg:grid-cols-12 gap-3 sm:gap-4 items-stretch">
           <div className="lg:col-span-4 surface edge-light overflow-hidden relative min-h-[15rem] sm:min-h-[18rem]">
             <img
-              src="/logo.jpg"
+              src="/logo-icon.svg"
               alt="Lyntrix Technologies emblem"
               loading="lazy"
-              className="absolute inset-0 w-full h-full object-contain p-10 sm:p-12"
+              className="absolute inset-0 w-full h-full object-contain p-14 sm:p-16 pb-24 sm:pb-28 about-mark"
             />
             <div className="absolute inset-x-4 bottom-4 px-4 py-3 rounded-xl bg-black/60 backdrop-blur border border-white/10">
               <div className="label !text-[var(--accent)]">Lyntrix Technologies</div>

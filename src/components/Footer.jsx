@@ -59,10 +59,7 @@ export default function Footer({ isAdminLoggedIn, onOpenAdminDashboard }) {
 
         <div className="grid grid-cols-2 lg:grid-cols-12 gap-x-6 gap-y-10">
           <div className="col-span-2 lg:col-span-5 space-y-5">
-            <div className="flex items-center gap-2.5">
-              <img src="/logo-icon.svg" alt="" className="w-8 h-8 object-contain" />
-              <span className="font-semibold text-lg tracking-[-0.02em] text-white">Lyntrix</span>
-            </div>
+            <img src="/brand/logo-dark.png" alt="Lyntrix Technologies" className="h-11 w-auto" width="1200" height="320" loading="lazy" />
             <p className="text-sm text-[var(--muted)] max-w-sm leading-relaxed">
               Resilient custom software, high-concurrency cloud architecture and zero-trust security for modern organizations.
             </p>

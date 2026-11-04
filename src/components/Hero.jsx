@@ -48,7 +48,7 @@ export default function Hero({ onOpenCalculator, onOpenTracker }) {
             <br className="hidden sm:block" />
             <Words words={LINE_2} from={4} />
             <span className="word-mask">
-              <span style={d(6)} className="serif drift">runs on.</span>
+              <span style={d(6)}><span className="serif drift">runs on.</span></span>
             </span>
           </h1>
 

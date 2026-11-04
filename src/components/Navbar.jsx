@@ -76,14 +76,8 @@ export default function Navbar({
             }`}
           >
             {/* Brand */}
-            <a href="#" className="flex items-center gap-2.5 shrink-0" aria-label="Lyntrix home">
-              <img src="/logo-icon.svg" alt="" className="w-8 h-8 object-contain" />
-              <span className="font-semibold text-[1.15rem] tracking-[-0.02em] text-white leading-none">
-                Lyntrix
-                <span className="hidden sm:inline ml-2 text-[10px] font-semibold tracking-[0.14em] text-[var(--muted)] uppercase">
-                  IT Services
-                </span>
-              </span>
+            <a href="#" className="flex items-center shrink-0" aria-label="Lyntrix Technologies home">
+              <img src="/brand/logo-dark.png" alt="Lyntrix Technologies" className="h-8 sm:h-9 w-auto" width="1200" height="320" />
             </a>
 
             {/* Desktop links */}
