@@ -2,7 +2,7 @@ import React from 'react';
 
 /**
  * Shared section heading. Desktop: title on the left, lead text bottom-aligned on the right.
- * The accent phrase is set in serif italic with the logo gradient.
+ * The accent phrase is set in the logo gradient.
  */
 export default function SectionHeader({ index, label, title, accent, children, align = 'left' }) {
   if (align === 'center') {
