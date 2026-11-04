@@ -4,14 +4,14 @@
    Lyntrix design system: "Vector"
    Built from the logo: deep blue-black canvas, the mark's cyan -> azure ->
    violet gradient, and its 60-degree slant used as the recurring shape
-   (chamfered buttons, slanted tags, diagonal light). Plus Jakarta Sans for
-   reading, JetBrains Mono for every HUD label, index and readout.
+   (chamfered buttons, slanted tags, diagonal light). One type family across
+   the whole UI: Geist for text and headings, Geist Mono for HUD labels and readouts.
    ------------------------------------------------------------------ */
 
 /* Remap Tailwind's cyan / sky / slate so legacy modals and the admin console inherit the theme */
 @theme {
-  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-sans: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
   --color-cyan-200: #bdeeff;
   --color-cyan-300: #8fe1ff;
@@ -255,10 +255,10 @@
   max-width: 38rem;
 }
 
-/* Editorial accent: serif italic with the logo gradient */
+/* Accent phrase in the logo gradient */
 .serif {
   font-family: var(--serif);
-  font-style: italic;
+  font-style: normal;
   font-weight: inherit;
   letter-spacing: -0.03em;
   padding-right: 0.08em;
@@ -270,7 +270,7 @@
 }
 .serif-plain {
   font-family: var(--serif);
-  font-style: italic;
+  font-style: normal;
 }
 
 .accent { color: var(--accent); }
@@ -930,11 +930,10 @@ select.field option { background: var(--surface-2); }
 
 .intro-tag {
   margin-top: 1.4rem;
-  font-family: var(--font-tech);
-  font-style: italic;
-  font-weight: 600;
+  font-family: var(--font-sans);
+  font-weight: 500;
   font-size: clamp(0.95rem, 2vw, 1.15rem);
-  letter-spacing: 0.02em;
+  letter-spacing: -0.01em;
   background: var(--grad);
   -webkit-background-clip: text;
   background-clip: text;
@@ -976,8 +975,8 @@ select.field option { background: var(--surface-2); }
   color: var(--text);
 }
 .intro-pct-sign {
-  font-family: var(--font-tech);
-  font-style: italic;
+  font-family: var(--font-sans);
+  font-weight: 500;
   font-size: 0.45em;
   margin-left: 0.1em;
   background: var(--grad);
@@ -1187,38 +1186,27 @@ select.field option { background: var(--surface-2); }
   .hero-floor { top: 40rem; }
 }
 
-/* Hero display type: Space Grotesk for the headline, Chakra Petch's angular
-   italic (cut corners like the logo) for the gradient phrase */
-:root { --font-display: 'Space Grotesk', var(--font-sans); --font-tech: 'Chakra Petch', var(--font-sans); }
-.hero-h1 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.045em; line-height: 1.02; }
-.hero-h1 .serif { font-family: var(--font-tech); font-weight: 700; letter-spacing: -0.02em; padding-right: 0.12em; }
-#hero-section .stat { font-family: var(--font-display); letter-spacing: -0.04em; }
-
 /* ------------------------------------------------------------------
-   Site-wide type: the hero pairing carried to every heading
-   Space Grotesk  -> headings, stats, big numbers, menu
-   Chakra Petch   -> the gradient accent phrase in every heading (angular italic)
-   Plus Jakarta   -> body copy;  JetBrains Mono -> labels and readouts
+   Type: Geist everywhere (display, body, menu, admin), Geist Mono for labels.
+   Accent phrases keep the logo gradient in an upright semibold cut.
    ------------------------------------------------------------------ */
-h1, h2, h3, h4, .h1, .h2, .h3, .stat, .wordmark {
+:root { --font-display: var(--font-sans); --font-tech: var(--font-sans); }
+body { font-feature-settings: 'ss01' on, 'cv11' on; letter-spacing: -0.006em; }
+h1, h2, h3, h4, .h1, .h2, .h3, .stat, .wordmark { font-family: var(--font-display); }
+.h1, .hero-h1 { font-weight: 600; letter-spacing: -0.05em; line-height: 1.02; }
+.h2 { font-weight: 600; letter-spacing: -0.045em; line-height: 1.05; }
+.h3 { font-weight: 600; letter-spacing: -0.03em; }
+.stat, #hero-section .stat { font-weight: 600; letter-spacing: -0.045em; }
+.serif, .hero-h1 .serif {
   font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  padding-right: 0.06em;
 }
-.h1 { letter-spacing: -0.045em; }
-.h2 { letter-spacing: -0.038em; line-height: 1.04; }
-.h3 { letter-spacing: -0.025em; }
-.stat { letter-spacing: -0.04em; }
-
-.serif {
-  font-family: var(--font-tech);
-  font-style: italic;
-  font-weight: 700;
-  letter-spacing: -0.015em;
-  padding-right: 0.12em;
-}
-.serif-plain { font-family: var(--font-tech); font-weight: 500; letter-spacing: 0; }
-
-/* Mobile menu links use the display face too */
-.mobile-nav-link { font-family: var(--font-display); letter-spacing: -0.03em; }
+.serif-plain { font-family: var(--font-sans); font-style: normal; font-weight: 500; letter-spacing: -0.01em; }
+.mobile-nav-link { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.04em; }
+.label, .eyebrow, .chip, .hud-meta, .marquee-item { font-feature-settings: normal; }
 
 /* ------------------------------------------------------------------
    Touch targets

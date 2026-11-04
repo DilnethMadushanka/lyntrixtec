@@ -91,7 +91,7 @@ export default function MatrixBackground({
       ctx.fillStyle = 'rgba(7, 9, 14, 0.22)';
       ctx.fillRect(0, 0, width, height);
 
-      ctx.font = `${fontSize}px "Fira Code", monospace, "Courier New"`;
+      ctx.font = `${fontSize}px "Geist Mono", monospace, "Courier New"`;
 
       for (let i = 0; i < drops.length; i++) {
         const drop = drops[i];
