@@ -171,7 +171,7 @@ export default function Navbar({
                   key={l.name}
                   href={l.href}
                   onClick={close}
-                  className="flex items-center justify-between py-4 border-b border-white/[0.06] text-3xl font-medium tracking-[-0.03em] text-white"
+                  className="mobile-nav-link flex items-center justify-between py-4 border-b border-white/[0.06] text-3xl font-medium tracking-[-0.03em] text-white"
                 >
                   {l.name}
                   <ArrowRight className="w-5 h-5 text-[var(--muted)]" />

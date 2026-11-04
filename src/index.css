@@ -1077,3 +1077,42 @@ select.field option { background: var(--surface-2); }
 .hero-h1 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.045em; line-height: 1.02; }
 .hero-h1 .serif { font-family: var(--font-tech); font-weight: 700; letter-spacing: -0.02em; padding-right: 0.12em; }
 #hero-section .stat { font-family: var(--font-display); letter-spacing: -0.04em; }
+
+/* ------------------------------------------------------------------
+   Site-wide type: the hero pairing carried to every heading
+   Space Grotesk  -> headings, stats, big numbers, menu
+   Chakra Petch   -> the gradient accent phrase in every heading (angular italic)
+   Plus Jakarta   -> body copy;  JetBrains Mono -> labels and readouts
+   ------------------------------------------------------------------ */
+h1, h2, h3, h4, .h1, .h2, .h3, .stat, .wordmark, .intro-word, .intro-pct {
+  font-family: var(--font-display);
+}
+.h1 { letter-spacing: -0.045em; }
+.h2 { letter-spacing: -0.038em; line-height: 1.04; }
+.h3 { letter-spacing: -0.025em; }
+.stat { letter-spacing: -0.04em; }
+
+.serif {
+  font-family: var(--font-tech);
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  padding-right: 0.12em;
+}
+.serif-plain { font-family: var(--font-tech); font-weight: 500; letter-spacing: 0; }
+.intro-tag { font-family: var(--font-tech); font-weight: 500; }
+
+/* Mobile menu links use the display face too */
+.mobile-nav-link { font-family: var(--font-display); letter-spacing: -0.03em; }
+
+/* ------------------------------------------------------------------
+   Touch targets
+   ------------------------------------------------------------------ */
+/* Carousel dots stay small visually but get a 28px hit area */
+.snap-dots button { position: relative; }
+.snap-dots button::after { content: ''; position: absolute; inset: -11px -5px; }
+
+/* Footer text links: taller hit area on touch screens */
+@media (hover: none), (max-width: 1023px) {
+  footer ul a { display: inline-block; padding-block: 0.35rem; }
+}

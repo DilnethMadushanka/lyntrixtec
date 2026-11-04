@@ -266,7 +266,7 @@ export default function InteractiveCostCalculator({ onSelectEstimate, dbTrigger 
       >
         <div className="flex items-center justify-between gap-3 rounded-full border border-white/10 bg-[#090d17]/90 backdrop-blur-xl pl-5 pr-1.5 py-1.5 shadow-[0_16px_50px_-10px_rgba(0,0,0,0.9)]">
           <div className="min-w-0">
-            <div className="label !text-[10px]">Estimate</div>
+            <div className="label !text-[11px]">Estimate</div>
             <div className="text-white font-medium tabular-nums tracking-[-0.01em] truncate">
               ${min.toLocaleString()} – ${max.toLocaleString()}
             </div>
