@@ -179,7 +179,7 @@ export default function Catalog() {
 
       {dirty && (
         <div className="fixed z-50 inset-x-3 lg:left-[calc(16rem+1.5rem)] lg:right-6 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] lg:bottom-6 fade-up">
-          <div className="max-w-3xl mx-auto flex items-center justify-between gap-3 rounded-full border border-white/10 bg-[#15151c]/95 backdrop-blur-xl pl-5 pr-1.5 py-1.5 shadow-2xl shadow-black/70">
+          <div className="max-w-3xl mx-auto flex items-center justify-between gap-3 rounded-full border border-white/10 bg-[#0e1422]/95 backdrop-blur-xl pl-5 pr-1.5 py-1.5 shadow-2xl shadow-black/70">
             <span className="text-sm text-white truncate">Unsaved price changes</span>
             <div className="flex gap-1.5 shrink-0">
               <button onClick={discard} className="btn btn-ghost btn-sm"><Undo2 className="w-4 h-4" /> <span className="hidden sm:inline">Discard</span></button>

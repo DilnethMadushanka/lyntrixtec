@@ -71,7 +71,7 @@ export default function Navbar({
           <div
             className={`h-14 sm:h-[3.75rem] flex items-center justify-between gap-4 rounded-full border pl-3 pr-2 sm:pl-4 transition-[background-color,border-color,box-shadow] duration-500 ${
               scrolled || open
-                ? 'bg-[#0e0e13]/75 backdrop-blur-xl border-white/[0.09] shadow-[0_12px_40px_-12px_rgba(0,0,0,0.8)]'
+                ? 'bg-[#090d17]/75 backdrop-blur-xl border-white/[0.09] shadow-[0_12px_40px_-12px_rgba(0,0,0,0.8)]'
                 : 'bg-transparent border-transparent'
             }`}
           >
@@ -163,7 +163,7 @@ export default function Navbar({
 
       {/* Mobile sheet */}
       {open && (
-        <div className="lg:hidden fixed inset-x-0 bottom-0 top-[4.5rem] bg-[#08080b]/[0.98] backdrop-blur-xl overflow-y-auto overscroll-contain fade-up">
+        <div className="lg:hidden fixed inset-x-0 bottom-0 top-[4.5rem] bg-[#04060c]/[0.98] backdrop-blur-xl overflow-y-auto overscroll-contain fade-up">
           <div className="container-x py-6 pb-[max(2rem,env(safe-area-inset-bottom))] flex flex-col min-h-full">
             <nav className="flex flex-col" aria-label="Mobile">
               {[...NAV_LINKS, { name: 'Contact', href: '#contact' }].map((l) => (

@@ -17,6 +17,35 @@ const STACK = ['AWS', 'Microsoft Azure', 'Kubernetes', 'Terraform', 'React', 'No
 // Staggered entrance: each element gets its own delay, offset by the intro overlay in CSS
 const d = (n) => ({ '--d': `${n * 0.08}s` });
 
+// The logo mark's three strokes, used for the outlined emblem behind the headline
+const MARK_PATHS = [
+  'M589 540H777L606 838H417Z',
+  'M957 540H1145L610 1470H422Z',
+  'M1322 540H1509L1068 1307H1248L1325 1173H1513L1342 1470H787Z',
+];
+
+function HeroStage() {
+  return (
+    <div className="hero-stage" aria-hidden="true">
+      <div className="hero-beams" />
+      <svg className="hero-emblem" viewBox="412 535 1106 940" fill="none">
+        <defs>
+          <linearGradient id="heroMarkGrad" x1="560" y1="0" x2="1380" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stopColor="#19c3ff" />
+            <stop offset="0.5" stopColor="#4f86f7" />
+            <stop offset="1" stopColor="#9050f0" />
+          </linearGradient>
+        </defs>
+        {MARK_PATHS.map((dPath, i) => (
+          <path key={i} d={dPath} stroke="url(#heroMarkGrad)" strokeWidth="3" pathLength="1" style={{ '--i': i }} />
+        ))}
+      </svg>
+      <div className="hero-floor" />
+      <div className="hero-scan" />
+    </div>
+  );
+}
+
 const LINE_1 = ['Engineering', 'the', 'systems'];
 const LINE_2 = ['modern', 'business'];
 
@@ -32,10 +61,23 @@ function Words({ words, from }) {
 
 export default function Hero({ onOpenCalculator, onOpenTracker }) {
   return (
-    <section id="hero-section" className="relative pt-36 sm:pt-44 pb-16 sm:pb-24">
+    <section id="hero-section" className="relative pt-32 sm:pt-40 pb-16 sm:pb-24 overflow-hidden">
+      <HeroStage />
       <div className="container-x relative">
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="hero-in" style={d(0)}>
+        <div className="hero-frame max-w-6xl mx-auto text-center">
+          <span className="hero-corner tl" aria-hidden="true" />
+          <span className="hero-corner tr" aria-hidden="true" />
+          <span className="hero-corner bl" aria-hidden="true" />
+          <span className="hero-corner br" aria-hidden="true" />
+
+          <div className="hud-meta hero-in" style={d(0)} aria-hidden="true">
+            <span><b>LYNTRIX</b>//CORE.SYS</span>
+            <span className="hidden sm:inline">NODE CMB-01</span>
+            <span className="hidden md:inline">6.9271°N 79.8612°E</span>
+            <span className="hud-live"><i />ONLINE</span>
+          </div>
+
+          <div className="hero-in mt-6" style={d(0)}>
             <a href="#solutions" className="pill hover:border-white/25 transition-colors">
               <span className="pill-tag">New</span>
               <span>Enterprise AI &amp; automation practice</span>
@@ -43,7 +85,7 @@ export default function Hero({ onOpenCalculator, onOpenTracker }) {
             </a>
           </div>
 
-          <h1 className="h1 mt-8">
+          <h1 className="h1 hero-h1 mt-7">
             <Words words={LINE_1} from={1} />
             <br className="hidden sm:block" />
             <Words words={LINE_2} from={4} />
@@ -71,7 +113,7 @@ export default function Hero({ onOpenCalculator, onOpenTracker }) {
           <ul className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-[var(--text-2)] hero-in" style={d(10)}>
             {PROOF.map((p) => (
               <li key={p} className="flex items-center gap-2">
-                <Check className="w-4 h-4 text-[var(--accent)] shrink-0" />
+                <span className="hero-check"><Check className="w-3 h-3" strokeWidth={3} /></span>
                 {p}
               </li>
             ))}
@@ -104,12 +146,12 @@ export default function Hero({ onOpenCalculator, onOpenTracker }) {
 
         {/* Stack marquee */}
         <div className="mt-14 sm:mt-20 hero-in" style={d(14)}>
-          <p className="label text-center">The stack we ship on, every day</p>
+          <p className="label text-center"><span className="text-[var(--accent)]">&gt;_</span> The stack we ship on, every day</p>
           <div className="marquee mt-6" aria-hidden="true">
             {[0, 1].map((k) => (
               <div key={k} className="marquee-track">
                 {STACK.map((t) => (
-                  <span key={t} className="text-lg sm:text-xl font-medium tracking-[-0.02em] text-white/35 whitespace-nowrap">
+                  <span key={t} className="marquee-item">
                     {t}
                   </span>
                 ))}

@@ -68,7 +68,7 @@ export default function LatencyWidget({ onOpenTracker }) {
               className="flex-1 rounded-[2px] transition-[height] duration-300"
               style={{
                 height: `${(v / max) * 100}%`,
-                background: i === history.length - 1 ? 'var(--accent)' : 'rgba(163,164,255,0.22)',
+                background: i === history.length - 1 ? 'var(--accent)' : 'rgba(44,202,255,0.22)',
               }}
             />
           ))}
