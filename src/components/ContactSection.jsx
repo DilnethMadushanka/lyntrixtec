@@ -127,7 +127,7 @@ export default function ContactSection({ estimateData, onInquirySubmitted, curre
     setIsSubmitting(false);
     setSubmitted(true);
     try {
-      confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 }, colors: ['#38bdf8', '#818cf8', '#c084fc', '#ffffff'] });
+      confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 }, colors: ['#19c3ff', '#4f86f7', '#9050f0', '#ffffff'] });
     } catch (err) {
       // confetti is decorative
     }

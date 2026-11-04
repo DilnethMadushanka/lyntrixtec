@@ -272,19 +272,19 @@ export default function LaserSolidsBackground({
       ctx.clearRect(0, 0, width, height);
 
       // Color Schemes
-      let neonGlow = 'rgba(56, 189, 248, 0.4)';  // Cyan Glow
-      let laserCore = '#38bdf8';                  // Cyan Core
+      let neonGlow = 'rgba(25, 195, 255, 0.4)';  // Cyan Glow
+      let laserCore = '#19c3ff';                  // Cyan Core
       let sparkColor = '#ffffff';                 // Bright White Spark
-      let faceFill = 'rgba(56, 189, 248, 0.04)';
+      let faceFill = 'rgba(25, 195, 255, 0.04)';
 
       if (colorMode === 'emerald') {
         neonGlow = 'rgba(52, 211, 153, 0.4)';
         laserCore = '#34d399';
         faceFill = 'rgba(52, 211, 153, 0.04)';
       } else if (colorMode === 'violet') {
-        neonGlow = 'rgba(192, 132, 252, 0.4)';
-        laserCore = '#c084fc';
-        faceFill = 'rgba(192, 132, 252, 0.04)';
+        neonGlow = 'rgba(144, 80, 240, 0.4)';
+        laserCore = '#9050f0';
+        faceFill = 'rgba(144, 80, 240, 0.04)';
       }
 
       // Arrays to collect projected points and lines for batched 2-pass drawing
@@ -477,7 +477,7 @@ export default function LaserSolidsBackground({
       // ==========================================
       // PASS 5: CONSTELLATION LASER LINKS (Clean & Fast)
       // ==========================================
-      ctx.strokeStyle = 'rgba(56, 189, 248, 0.12)';
+      ctx.strokeStyle = 'rgba(25, 195, 255, 0.12)';
       ctx.lineWidth = 0.8;
       ctx.setLineDash([4, 6]);
       ctx.beginPath();

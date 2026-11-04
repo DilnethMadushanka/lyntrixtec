@@ -123,7 +123,7 @@ export default function MatrixBackground({
         // Draw the leading head character (White-Cyan super-glow)
         if (drop.y > 0 && drop.y < height) {
           ctx.save();
-          ctx.shadowColor = '#38bdf8';
+          ctx.shadowColor = '#19c3ff';
           ctx.shadowBlur = 10;
           ctx.fillStyle = '#ffffff';
           ctx.fillText(char, currentX, drop.y);
@@ -142,7 +142,7 @@ export default function MatrixBackground({
 
             // Shifting matrix colors: Cyan to Indigo to Deep Blue
             if (j < 3) {
-              ctx.fillStyle = `rgba(56, 189, 248, ${alpha * 0.9})`; // Bright Cyan
+              ctx.fillStyle = `rgba(25, 195, 255, ${alpha * 0.9})`; // Bright Cyan
             } else if (j < 8) {
               ctx.fillStyle = `rgba(99, 102, 241, ${alpha * 0.75})`; // Electric Indigo
             } else {

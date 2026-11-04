@@ -44,7 +44,7 @@ export default function Footer({ isAdminLoggedIn, onOpenAdminDashboard }) {
   return (
     <footer className="relative z-10 border-t border-[var(--line)] bg-[#060609] overflow-hidden">
       <span
-        className="absolute left-1/2 -translate-x-1/2 -bottom-64 w-[70rem] h-[28rem] rounded-full bg-[radial-gradient(closest-side,rgba(129,140,248,0.22),transparent)] blur-2xl pointer-events-none"
+        className="absolute left-1/2 -translate-x-1/2 -bottom-64 w-[70rem] h-[28rem] rounded-full bg-[radial-gradient(closest-side,rgba(79,134,247,0.22),transparent)] blur-2xl pointer-events-none"
         aria-hidden="true"
       />
       <div className="container-x relative pt-16 sm:pt-24 pb-[max(2rem,env(safe-area-inset-bottom))]">

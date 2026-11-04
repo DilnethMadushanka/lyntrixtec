@@ -126,7 +126,7 @@ export default function InteractiveCostCalculator({ onSelectEstimate, dbTrigger 
 
   const handleRequestQuote = () => {
     try {
-      confetti({ particleCount: 80, spread: 70, origin: { y: 0.7 }, colors: ['#38bdf8', '#818cf8', '#c084fc', '#ffffff'] });
+      confetti({ particleCount: 80, spread: 70, origin: { y: 0.7 }, colors: ['#19c3ff', '#4f86f7', '#9050f0', '#ffffff'] });
     } catch (e) {
       // confetti is decorative
     }
@@ -210,7 +210,7 @@ export default function InteractiveCostCalculator({ onSelectEstimate, dbTrigger 
           {/* Summary */}
           <aside ref={summaryRef} className="lg:col-span-4 lg:sticky lg:top-24">
             <div className="surface ring-grad overflow-hidden p-5 sm:p-7 relative">
-              <span className="absolute -top-24 -right-24 w-56 h-56 rounded-full bg-[#818cf8]/20 blur-3xl pointer-events-none" aria-hidden="true" />
+              <span className="absolute -top-24 -right-24 w-56 h-56 rounded-full bg-[#4f86f7]/20 blur-3xl pointer-events-none" aria-hidden="true" />
               <div className="label relative">Estimated investment</div>
               <div className="mt-4">
                 <div className="stat !text-[clamp(2rem,3.6vw,2.6rem)] tabular-nums break-words">
@@ -264,7 +264,7 @@ export default function InteractiveCostCalculator({ onSelectEstimate, dbTrigger 
         }`}
         aria-hidden={!(formVisible && !summaryVisible)}
       >
-        <div className="flex items-center justify-between gap-3 rounded-full border border-white/10 bg-[#0e0e13]/90 backdrop-blur-xl pl-5 pr-1.5 py-1.5 shadow-[0_16px_50px_-10px_rgba(0,0,0,0.9)]">
+        <div className="flex items-center justify-between gap-3 rounded-full border border-white/10 bg-[#090d17]/90 backdrop-blur-xl pl-5 pr-1.5 py-1.5 shadow-[0_16px_50px_-10px_rgba(0,0,0,0.9)]">
           <div className="min-w-0">
             <div className="label !text-[10px]">Estimate</div>
             <div className="text-white font-medium tabular-nums tracking-[-0.01em] truncate">
