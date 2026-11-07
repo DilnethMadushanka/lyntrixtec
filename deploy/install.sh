@@ -51,13 +51,13 @@ if [ -f "$APP_DIR/.env" ]; then
 else
   say "Creating .env from the existing settings"
   # Gmail account and app password the code already uses as its fallback
-  GMAIL_USER_VAL=$(grep -oE "VITE_GMAIL_USER \|\| '[^']+'" "$APP_DIR/api/send-otp.js" | head -1 | sed -E "s/.*'([^']+)'/\1/")
-  GMAIL_PASS_VAL=$(grep -oE "VITE_GMAIL_APP_PASSWORD \|\| '[^']+'" "$APP_DIR/api/send-otp.js" | head -1 | sed -E "s/.*'([^']+)'/\1/")
-  GOOGLE_ID_VAL=$(grep -oE "[0-9]+-[a-z0-9]+\.apps\.googleusercontent\.com" "$APP_DIR/src/components/AuthModal.jsx" | head -1 || true)
+  GMAIL_USER_VAL=$({ grep -oE "VITE_GMAIL_USER \|\| '[^']+'" "$APP_DIR/api/send-otp.js" || true; } | head -1 | sed -E "s/.*'([^']+)'/\1/")
+  GMAIL_PASS_VAL=$({ grep -oE "VITE_GMAIL_APP_PASSWORD \|\| '[^']+'" "$APP_DIR/api/send-otp.js" || true; } | head -1 | sed -E "s/.*'([^']+)'/\1/")
+  GOOGLE_ID_VAL=$({ grep -oE "[0-9]+-[a-z0-9]+\.apps\.googleusercontent\.com" "$APP_DIR/src/components/AuthModal.jsx" || true; } | head -1)
 
   # Firebase web config is public: read it from the live site's JS bundle
   FB_API_KEY=""; FB_AUTH=""; FB_PROJECT=""; FB_BUCKET=""; FB_SENDER=""; FB_APP=""
-  pick() { grep -oE "$1:[\"\`][^\"\`]+[\"\`]" | head -1 | sed -E 's/^[^:]+:.(.*).$/\1/'; }
+  pick() { { grep -oE "$1:[\"\`][^\"\`]+[\"\`]" || true; } | head -1 | sed -E 's/^[^:]+:.(.*).$/\1/'; }
   for url in $LIVE_URLS; do
     html=$(curl -fsSL --max-time 15 "$url" 2>/dev/null) || continue
     for js in $(printf '%s' "$html" | grep -oE '/assets/[^"]+\.js' | sort -u); do
@@ -68,7 +68,7 @@ else
       v=$(printf '%s' "$bundle" | pick storageBucket);     [ -n "$v" ] && [ -z "$FB_BUCKET" ] && FB_BUCKET=$v
       v=$(printf '%s' "$bundle" | pick messagingSenderId); [ -n "$v" ] && [ -z "$FB_SENDER" ] && FB_SENDER=$v
       v=$(printf '%s' "$bundle" | pick appId);             [ -n "$v" ] && [ -z "$FB_APP" ] && FB_APP=$v
-      v=$(printf '%s' "$bundle" | grep -oE '[0-9]+-[a-z0-9]+\.apps\.googleusercontent\.com' | head -1 || true)
+      v=$(printf '%s' "$bundle" | { grep -oE '[0-9]+-[a-z0-9]+\.apps\.googleusercontent\.com' || true; } | head -1)
       [ -n "$v" ] && GOOGLE_ID_VAL=$v
     done
     if [ -n "$FB_PROJECT" ]; then echo "Firebase config read from $url"; break; fi
@@ -137,5 +137,5 @@ fi
 IP=$(hostname -I | awk '{print $1}')
 echo
 echo "Done. Open: http://${DOMAIN:-$IP}"
-[ -n "$DOMAIN" ] && echo "For HTTPS: apt install -y certbot python3-certbot-nginx && certbot --nginx -d $DOMAIN -d www.$DOMAIN"
+if [ -n "$DOMAIN" ]; then echo "For HTTPS: apt install -y certbot python3-certbot-nginx && certbot --nginx -d $DOMAIN -d www.$DOMAIN"; fi
 echo "Update later: run this same command again."
