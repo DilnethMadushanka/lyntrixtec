@@ -143,7 +143,7 @@ export default async function handler(req, res) {
         </body>
         </html>
       `;
-    } else {
+    } else if (type !== 'consultation_approved') {
       // Client order confirmation
       recipient = orderData.email;
       subject = orderData.hasConsultation 
