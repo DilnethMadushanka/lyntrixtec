@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
-# Pull the latest code, rebuild, and restart. Run on the droplet as the lyntrix user:
-#   cd ~/lyntrixtec && ./deploy/update.sh
+# Pull the latest code, rebuild and restart. Run on the droplet as root:
+#   bash /home/lyntrix/lyntrixtec/deploy/update.sh
+# Set BRANCH=... to deploy another branch (default: main).
 set -euo pipefail
-cd "$(dirname "$0")/.."
-git pull --ff-only
-npm ci
-npm run build
-sudo systemctl restart lyntrix
-echo "Deployed $(git rev-parse --short HEAD)"
+exec bash "$(dirname "$0")/install.sh"

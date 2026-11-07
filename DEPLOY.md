@@ -8,6 +8,27 @@ Nginx sits in front for HTTPS.
 Browser ──HTTPS──> Nginx :443 ──> Node server.js :3000 ──> dist/ + api/*
 ```
 
+## Quick start: one command
+
+On a fresh Ubuntu 24.04 droplet, logged in as root:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DilnethMadushanka/lyntrixtec/main/deploy/install.sh | bash
+```
+
+With a domain already pointing at the droplet:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DilnethMadushanka/lyntrixtec/main/deploy/install.sh | DOMAIN=lyntrixtec.com bash
+```
+
+`deploy/install.sh` adds swap, installs Node 22 / Nginx / Git, opens the firewall, clones the repo
+as the `lyntrix` user, writes `.env` (Gmail settings from the code's current fallback, Firebase web
+config read from the live Vercel site), builds, and starts the systemd service behind Nginx.
+It never overwrites an existing `.env`, and running it again updates the site.
+
+The manual steps below do the same thing by hand.
+
 ## 1. Create the droplet
 
 - **Image:** Ubuntu 24.04 LTS
@@ -133,8 +154,8 @@ Add the domain in two places, or Google sign-in will fail on the new host:
 ## Updating the site later
 
 ```bash
-ssh lyntrix@YOUR_DROPLET_IP
-cd ~/lyntrixtec && ./deploy/update.sh
+ssh root@YOUR_DROPLET_IP
+bash /home/lyntrix/lyntrixtec/deploy/update.sh
 ```
 
 This pulls `main`, installs packages, rebuilds and restarts the service.
